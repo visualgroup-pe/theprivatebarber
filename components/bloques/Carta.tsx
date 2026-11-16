@@ -1,9 +1,10 @@
 import { Boton } from "@/components/ui/Boton";
 import { Foto } from "@/components/ui/Foto";
-import { servicios } from "@/content/servicios";
+import { obtenerServicios } from "@/lib/catalogo";
 import { soles } from "@/lib/tokens";
 
-export function Carta() {
+export async function Carta() {
+  const servicios = await obtenerServicios();
   return (
     <section id="servicios" aria-labelledby="serv-t" className="py-[clamp(110px,12vw,190px)]">
       <div className="contenedor split">

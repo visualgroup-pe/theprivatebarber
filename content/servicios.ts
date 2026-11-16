@@ -4,6 +4,8 @@
  * como semilla y respaldo. Textos copiados del lienzo.
  */
 export type Servicio = {
+  /** uuid en Supabase; en el respaldo de content/, el slug */
+  id: string;
   slug: string;
   nombre: string;
   precioPen: number;
@@ -20,6 +22,7 @@ export type Servicio = {
 
 export const servicios: Servicio[] = [
   {
+    id: "corte-a-medida",
     slug: "corte-a-medida",
     nombre: "Corte a medida",
     precioPen: 200,
@@ -31,6 +34,7 @@ export const servicios: Servicio[] = [
     duracionTexto: "45 min – 1 h",
   },
   {
+    id: "barba-y-perfilado",
     slug: "barba-y-perfilado",
     nombre: "Barba y perfilado",
     precioPen: 100,
@@ -42,6 +46,7 @@ export const servicios: Servicio[] = [
     duracionTexto: "45 min – 1 h",
   },
   {
+    id: "corte-y-barba",
     slug: "corte-y-barba",
     nombre: "Corte y barba",
     precioPen: 300,
@@ -53,6 +58,7 @@ export const servicios: Servicio[] = [
     duracionTexto: "45 min – 1 h",
   },
   {
+    id: "asesoria-de-imagen",
     slug: "asesoria-de-imagen",
     nombre: "Asesoría de imagen",
     precioPen: 50,

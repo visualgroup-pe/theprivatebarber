@@ -34,7 +34,7 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 1. ✅ Proyecto base, tokens, fuentes y componentes `ui/`.
 2. ✅ Portada completa estática.
 3. ✅ Reseñas y páginas legales (textos legales en borrador: revisión de un abogado pendiente).
-4. Supabase: esquema, RLS y semillas.
+4. ✅ Supabase: esquema, RLS y semillas (ver `supabase/LEEME.md`; `npm run db:probar`).
 5. Formulario de solicitud y confirmación.
 6. Paneles del barbero y de administración.
 7. Avisos por correo y WhatsApp.
