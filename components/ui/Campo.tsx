@@ -73,6 +73,25 @@ export function Campo({ etiqueta, error, ayuda, tono, className, etiquetaClassNa
   );
 }
 
+type TextoProps = Envoltura & Omit<ComponentProps<"textarea">, "className">;
+
+/** Texto largo (detalle de un reclamo, referencias) con la apariencia de Campo. */
+export function CampoTexto({ etiqueta, error, ayuda, tono, className, etiquetaClassName, id, ...textarea }: TextoProps) {
+  const campoId = idDe(id, textarea.name);
+  return (
+    <Marco {...{ etiqueta, error, ayuda, tono, className, etiquetaClassName }} id={campoId}>
+      <textarea
+        id={campoId}
+        className="campo__control"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy(campoId, error, ayuda)}
+        rows={4}
+        {...textarea}
+      />
+    </Marco>
+  );
+}
+
 type SeleccionProps = Envoltura & Omit<ComponentProps<"select">, "className">;
 
 /** Lista desplegable con la misma apariencia que Campo. */

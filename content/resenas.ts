@@ -31,9 +31,12 @@ export const resenas: Resena[] = [
   },
 ];
 
-/** Marcadores del lienzo hasta confirmar el perfil de Google. */
+/**
+ * Marcadores del lienzo hasta confirmar el perfil de Google.
+ * El enlace sale de NEXT_PUBLIC_GOOGLE_RESENA_URL; mientras falte, no lleva a ninguna parte.
+ */
 export const perfilGoogle = {
   calificacion: "[Calificación]",
   total: "[N]",
-  enlace: "[enlace-perfil-google]",
+  enlace: process.env.NEXT_PUBLIC_GOOGLE_RESENA_URL || "#",
 };

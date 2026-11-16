@@ -253,3 +253,125 @@
     }
   }
 }
+
+@layer components {
+  /* ── Opción en tarjeta (.opt de las pantallas móviles de reserva) ── */
+  .opcion {
+    position: relative;
+    display: block;
+    cursor: pointer;
+  }
+  .opcion input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .opcion__tarjeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid var(--color-piedra);
+    background: var(--color-lino);
+    transition:
+      border-color 0.4s,
+      background 0.4s;
+  }
+  .opcion:hover .opcion__tarjeta {
+    border-color: var(--color-tabaco);
+  }
+  .opcion input:checked + .opcion__tarjeta {
+    border-color: var(--color-obsidiana);
+    background: #ffffff;
+    box-shadow: inset 3px 0 0 var(--color-huaca);
+  }
+  .opcion input:focus-visible + .opcion__tarjeta {
+    outline: 2px solid var(--color-huaca);
+    outline-offset: 2px;
+  }
+  .opcion input:disabled + .opcion__tarjeta {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* ── Texto largo con la apariencia de Campo ── */
+  textarea.campo__control {
+    height: auto;
+    min-height: 132px;
+    padding: 12px 0;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  /* ── Páginas legales ── */
+  .legal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 6vw, 110px);
+    align-items: start;
+  }
+  .prosa {
+    max-width: 720px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-tabaco);
+  }
+  .prosa > section + section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-piedra);
+  }
+  .prosa h2 {
+    margin: 0 0 18px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(30px, 2.6vw, 40px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--color-obsidiana);
+    scroll-margin-top: 110px;
+  }
+  .prosa p {
+    margin: 0 0 16px;
+  }
+  .prosa ul,
+  .prosa ol {
+    margin: 0 0 16px;
+    padding-left: 1.2em;
+  }
+  .prosa ul {
+    list-style: disc;
+  }
+  .prosa ol {
+    list-style: decimal;
+  }
+  .prosa li {
+    margin: 6px 0;
+  }
+  .prosa li::marker {
+    color: var(--color-huaca);
+  }
+  .prosa strong {
+    font-weight: 600;
+    color: var(--color-obsidiana);
+  }
+  .prosa a {
+    color: var(--color-obsidiana);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prosa a:hover {
+    color: var(--color-huaca-profundo);
+  }
+  .indice a[aria-current="true"] {
+    color: var(--color-obsidiana);
+  }
+
+  @media (min-width: 961px) {
+    .legal {
+      grid-template-columns: 4fr 8fr;
+    }
+  }
+}

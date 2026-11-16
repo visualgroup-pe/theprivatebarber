@@ -16,7 +16,10 @@ npm run dev
 ```
 
 - `/`: portada.
+- `/resenas`, `/privacidad`, `/terminos`, `/libro-de-reclamaciones`.
 - `/ui`: muestrario de componentes, solo en desarrollo.
+
+Copia `.env.example` a `.env.local` y completa los datos pendientes.
 
 ## Sistema de diseño
 
@@ -30,7 +33,7 @@ npm run dev
 
 1. ✅ Proyecto base, tokens, fuentes y componentes `ui/`.
 2. ✅ Portada completa estática.
-3. Reseñas y páginas legales.
+3. ✅ Reseñas y páginas legales (textos legales en borrador: revisión de un abogado pendiente).
 4. Supabase: esquema, RLS y semillas.
 5. Formulario de solicitud y confirmación.
 6. Paneles del barbero y de administración.
