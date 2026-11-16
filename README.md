@@ -56,5 +56,13 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 
 - Salen en segundo plano (`after()`), sin demorar la respuesta. Un canal sin claves se omite.
 - Cada aviso queda en la tabla `avisos` con su estado; el webhook `/api/whatsapp/webhook` actualiza «entregado» y «leído».
-- `/api/cron/avisos` corre cada hora (Vercel Cron, `vercel.json`) y exige `CRON_SECRET`.
+- `/api/cron/avisos` exige `CRON_SECRET` y debe correr cada hora. Vercel Hobby solo permite tareas diarias: al pasar a Pro, agregar a `vercel.json`:
+  `"crons": [{ "path": "/api/cron/avisos", "schedule": "0 * * * *" }]`.
 - Plantillas de WhatsApp para aprobar en Meta: `docs/plantillas-whatsapp.md`.
+
+## Publicación (Vercel)
+
+- Proyecto `theprivatebarber` en el equipo VISUAL Group: https://theprivatebarber.vercel.app (región `gru1`, São Paulo, junto a Supabase).
+- Variables cargadas en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` (clave propia «vercel_produccion»), `CRON_SECRET`, `SITIO_URL`.
+- `.vercelignore` impide subir `.env*` y el material de referencia.
+- Aún sin vínculo a GitHub (Vercel pide conectar GitHub como método de ingreso de la cuenta). Mientras tanto se publica con `npx vercel deploy --prod`.

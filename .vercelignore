@@ -1,0 +1,9 @@
+# Nunca subir claves locales ni material que no es parte de la web
+.env*
+!.env.example
+referencia
+supabase/pruebas
+docs
+scripts
+.next
+node_modules
