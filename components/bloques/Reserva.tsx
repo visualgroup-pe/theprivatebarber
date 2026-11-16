@@ -1,4 +1,4 @@
-import { FormularioEscritorio } from "@/components/reserva/FormularioEscritorio";
+import { FormularioEscritorioDiferido } from "@/components/reserva/FormularioEscritorioDiferido";
 import { Boton } from "@/components/ui/Boton";
 import { Enlace } from "@/components/ui/Enlace";
 import { Foto } from "@/components/ui/Foto";
@@ -31,7 +31,7 @@ export async function Reserva() {
           Envía tu solicitud. Te escribimos por WhatsApp cuando el barbero la confirme.
         </p>
         <div className="solo-escritorio">
-          <FormularioEscritorio catalogo={{ servicios, zonas, barberos }} />
+          <FormularioEscritorioDiferido catalogo={{ servicios, zonas, barberos }} />
         </div>
         <div className="solo-movil revelar mt-12 flex flex-col items-start gap-3.5">
           <Boton href="/reserva" variante="clara" className="min-h-16 w-full">

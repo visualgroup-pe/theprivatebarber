@@ -14,7 +14,7 @@ type Props = {
   posicion?: string;
   /** Cortina al hacer scroll (.clip del lienzo) */
   cortina?: boolean;
-  /** Solo la foto del hero */
+  /** Solo la foto del hero (el LCP): se pide de inmediato y con prioridad alta */
   preload?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -33,7 +33,8 @@ export function Foto({ src, alt, sizes, aspecto, posicion, cortina, preload, cla
         alt={alt}
         fill
         sizes={sizes}
-        preload={preload}
+        loading={preload ? "eager" : undefined}
+        fetchPriority={preload ? "high" : undefined}
         style={posicion ? { objectPosition: posicion } : undefined}
       />
       {children}

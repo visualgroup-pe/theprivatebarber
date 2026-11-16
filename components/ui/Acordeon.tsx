@@ -26,7 +26,7 @@ export function Acordeon({ pregunta, children, abierto, ultimo, className }: Pro
     >
       <summary className="font-serif flex min-h-11 items-center justify-between gap-6 py-7 text-[clamp(26px,2.2vw,34px)] leading-[1.1]">
         {pregunta}
-        <span className="acordeon__signo text-[34px] text-huaca-profundo" aria-hidden="true">
+        <span className="acordeon__signo text-[34px] text-huaca-hondo" aria-hidden="true">
           +
         </span>
       </summary>

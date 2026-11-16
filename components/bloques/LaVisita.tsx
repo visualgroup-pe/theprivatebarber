@@ -53,21 +53,21 @@ export function LaVisita() {
           <p className="m-0 text-[17px] leading-[1.6] text-tabaco">
             Una hora pensada como una prueba en sastrería: se mide, se conversa, se trabaja y se ajusta.
           </p>
-          <p className="etiqueta mt-[22px] mb-0 text-huaca-profundo">Desliza →</p>
+          <p className="etiqueta mt-[22px] mb-0 text-huaca-hondo">Desliza →</p>
         </div>
       </div>
-      <div className="rail" role="list" tabIndex={0} aria-label="Los cuatro tiempos de la visita">
+      <ul className="rail" tabIndex={0} aria-label="Los cuatro tiempos de la visita">
         {TIEMPOS.map((t) => (
-          <article key={t.titulo} role="listitem" className="revelar">
+          <li key={t.titulo} className="revelar">
             <Foto src={t.src} alt={t.alt} posicion={t.posicion} sizes="(min-width: 961px) 30vw, 280px" aspecto="3 / 4" />
-            <p className="font-serif mt-[26px] mb-0 text-[22px] text-huaca-profundo">
+            <p className="font-serif mt-[26px] mb-0 text-[22px] text-huaca-hondo">
               <em>{t.n}</em>
             </p>
             <h3 className="font-serif mt-1 mb-2.5 text-[38px] leading-none">{t.titulo}</h3>
             <p className="m-0 text-[16px] leading-[1.6] text-tabaco">{t.texto}</p>
-          </article>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

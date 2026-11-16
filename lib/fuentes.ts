@@ -17,11 +17,12 @@ export const hankenGrotesk = Hanken_Grotesk({
   variable: "--font-hanken-grotesk",
 });
 
-/** Solo precios, horas y números. */
+/** Solo precios, horas y números. No hay cifras arriba del pliegue: no se precarga. */
 export const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
+  preload: false,
   variable: "--font-ibm-plex-mono",
 });
 
