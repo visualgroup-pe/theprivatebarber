@@ -62,7 +62,8 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 
 ## Publicación (Vercel)
 
-- Proyecto `theprivatebarber` en el equipo VISUAL Group: https://theprivatebarber.vercel.app (región `gru1`, São Paulo, junto a Supabase).
-- Variables cargadas en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` (clave propia «vercel_produccion»), `CRON_SECRET`, `SITIO_URL`.
+- Proyecto `theprivatebarber` en el equipo VISUAL Group. Dominio: https://www.theprivatebarber.pro (`theprivatebarber.pro` redirige a www); también https://theprivatebarber.vercel.app. Región `gru1` (São Paulo), junto a Supabase.
+- DNS en Hostinger: `A @ → 216.198.79.1` y `A @ → 64.29.17.1`; `CNAME www → 00606ed040877b15.vercel-dns-017.com`.
+- Variables cargadas en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` (clave propia «vercel_produccion»), `CRON_SECRET`, `SITIO_URL`, `NEXT_PUBLIC_SITIO_URL`, `NEXT_PUBLIC_WHATSAPP_NUMERO` (924 171 401).
 - `.vercelignore` impide subir `.env*` y el material de referencia.
 - Aún sin vínculo a GitHub (Vercel pide conectar GitHub como método de ingreso de la cuenta). Mientras tanto se publica con `npx vercel deploy --prod`.
