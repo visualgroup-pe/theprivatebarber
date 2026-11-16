@@ -1,6 +1,6 @@
 import { after, NextResponse } from "next/server";
 import { franjas } from "@/content/zonas";
-import { obtenerBarberos, obtenerServicios, obtenerZonas } from "@/lib/catalogo";
+import { leerBarberos, leerServicios, leerZonas } from "@/lib/catalogo";
 import {
   errorDeDisponibilidad,
   erroresPorCampo,
@@ -66,7 +66,8 @@ export async function POST(request: Request) {
     return responder({ ok: false, mensaje: "Las reservas en línea aún no están activas. Escríbenos por WhatsApp." }, 503);
   }
 
-  const [servicios, zonas, barberos] = await Promise.all([obtenerServicios(), obtenerZonas(), obtenerBarberos()]);
+  // Datos del momento (sin caché): un cambio de horario o un barbero nuevo valen de inmediato.
+  const [servicios, zonas, barberos] = await Promise.all([leerServicios(), leerZonas(), leerBarberos()]);
   const servicio = servicios.find((s) => s.id === d.servicioId && !s.esAdicional);
   if (!servicio) {
     return responder({ ok: false, mensaje: "Revisa los datos marcados.", errores: { servicioId: "Elige un servicio." } }, 400);

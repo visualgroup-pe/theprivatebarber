@@ -36,20 +36,32 @@ export const esquemaReclamacion = z
     detalle: texto(10, 3000, "Cuéntanos qué pasó (al menos 10 caracteres)."),
     pedido: texto(5, 1500, "Indica qué solicitas (al menos 5 caracteres)."),
   })
-  .superRefine((d, ctx) => {
-    if (d.tipoDocumento === "DNI" && !/^\d{8}$/.test(d.numeroDocumento)) {
-      ctx.addIssue({ code: "custom", path: ["numeroDocumento"], message: "El DNI tiene 8 dígitos." });
-    } else if (d.tipoDocumento !== "DNI" && !/^[A-Za-z0-9]{5,20}$/.test(d.numeroDocumento)) {
-      ctx.addIssue({ code: "custom", path: ["numeroDocumento"], message: "Revisa el número: entre 5 y 20 letras o números." });
-    }
-    if (d.menorDeEdad && !d.apoderado) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["apoderado"],
-        message: "Si eres menor de edad, escribe el nombre de tu padre, madre o apoderado.",
-      });
-    }
+  // Reglas entre campos. `when`: corren en cuanto sus campos están listos,
+  // aunque falten otros (así el error del DNI aparece de inmediato).
+  .refine((d) => d.tipoDocumento !== "DNI" || /^\d{8}$/.test(d.numeroDocumento), {
+    path: ["numeroDocumento"],
+    message: "El DNI tiene 8 dígitos.",
+    when: (p) => documentoListo(p.value),
+  })
+  .refine((d) => d.tipoDocumento === "DNI" || /^[A-Za-z0-9]{5,20}$/.test(d.numeroDocumento), {
+    path: ["numeroDocumento"],
+    message: "Revisa el número: entre 5 y 20 letras o números.",
+    when: (p) => documentoListo(p.value),
+  })
+  .refine((d) => !d.menorDeEdad || Boolean(d.apoderado), {
+    path: ["apoderado"],
+    message: "Si eres menor de edad, escribe el nombre de tu padre, madre o apoderado.",
+    when: (p) => typeof (p.value as { menorDeEdad?: unknown })?.menorDeEdad === "boolean",
   });
+
+function documentoListo(v: unknown): boolean {
+  const d = v as { tipoDocumento?: unknown; numeroDocumento?: unknown } | null;
+  return (
+    TIPOS_DOCUMENTO.includes(d?.tipoDocumento as (typeof TIPOS_DOCUMENTO)[number]) &&
+    typeof d?.numeroDocumento === "string" &&
+    d.numeroDocumento.trim().length > 0
+  );
+}
 
 export type Reclamacion = z.infer<typeof esquemaReclamacion>;
 export type CampoReclamacion = keyof Reclamacion;

@@ -383,7 +383,7 @@
     transform: scale(1.035);
   }
 
-  /* Grano: capa fija con grano.png al 9 % en modo overlay */
+  /* Grano: capa fija con grano.webp al 9 % en modo overlay */
   .grano {
     position: fixed;
     inset: 0;

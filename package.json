@@ -9,7 +9,9 @@
     "lint": "eslint",
     "db:probar": "bash scripts/probar-db.sh",
     "db:tipos": "node scripts/supabase-remoto.mjs tipos > lib/supabase/tipos.ts && prettier --write lib/supabase/tipos.ts --print-width 120",
-    "db:migrar": "node scripts/supabase-remoto.mjs migrar"
+    "db:migrar": "node scripts/supabase-remoto.mjs migrar",
+    "test:e2e": "next build && playwright test",
+    "test": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",
@@ -24,6 +26,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",

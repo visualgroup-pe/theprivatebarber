@@ -40,7 +40,7 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 5. ✅ Formulario de solicitud (escritorio en la portada; móvil en `/reserva`, 3 pasos), `/api/solicitudes` y confirmación.
 6. ✅ Paneles del barbero (`/barbero`) y de administración (`/admin`) con Supabase Auth; ingreso en `/ingresar`.
 7. ✅ Avisos por correo (Resend) y WhatsApp Cloud API, recordatorio de 24 h y alerta por falta de respuesta (ver «Avisos»).
-8. SEO, datos estructurados, Lighthouse y pruebas.
+8. ✅ SEO (canónicas, Open Graph, HairSalon, sitemap, robots), Lighthouse y pruebas E2E (`npm run test:e2e`).
 
 ## Avisos
 
@@ -67,3 +67,18 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 - Variables cargadas en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` (clave propia «vercel_produccion»), `CRON_SECRET`, `SITIO_URL`, `NEXT_PUBLIC_SITIO_URL`, `NEXT_PUBLIC_WHATSAPP_NUMERO` (924 171 401).
 - `.vercelignore` impide subir `.env*` y el material de referencia.
 - Aún sin vínculo a GitHub (Vercel pide conectar GitHub como método de ingreso de la cuenta). Mientras tanto se publica con `npx vercel deploy --prod`.
+
+## Pruebas
+
+```bash
+npm run db:probar
+```
+
+```bash
+npm run test:e2e
+```
+
+- `db:probar`: reglas y permisos de la base (Postgres local, sin Supabase).
+- `test:e2e`: 34 pruebas de los flujos del brief con Playwright sobre el build de producción (puerto 3100), con Resend y WhatsApp imitados (`pruebas/e2e/mock-proveedores.cjs`).
+  Usan el Supabase de `.env.local`: crean un barbero y cuentas de prueba, y todo lo que escriben lleva el prefijo «Prueba E2E» y se borra al final.
+  La prueba de la tarea de cada hora se salta sola si hay citas reales abiertas. Lo ideal es correrlas contra un proyecto de Supabase de prueba.

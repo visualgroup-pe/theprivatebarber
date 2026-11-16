@@ -20,6 +20,11 @@ export async function obtenerServicios(): Promise<Servicio[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(ETIQUETA_CATALOGO);
+  return leerServicios();
+}
+
+/** Sin caché: para validar una solicitud con los datos del momento. */
+export async function leerServicios(): Promise<Servicio[]> {
   if (!supabaseConfigurado()) return serviciosRespaldo;
 
   const { data, error } = await crearClientePublico()
@@ -46,6 +51,11 @@ export async function obtenerZonas(): Promise<Zona[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(ETIQUETA_CATALOGO);
+  return leerZonas();
+}
+
+/** Sin caché: para validar una solicitud con los datos del momento. */
+export async function leerZonas(): Promise<Zona[]> {
   if (!supabaseConfigurado()) return zonasRespaldo.map((d) => ({ id: d, distrito: d }));
 
   const { data, error } = await crearClientePublico()
@@ -61,6 +71,11 @@ export async function obtenerBarberos(): Promise<Barbero[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(ETIQUETA_CATALOGO);
+  return leerBarberos();
+}
+
+/** Sin caché: para validar una solicitud con los datos del momento. */
+export async function leerBarberos(): Promise<Barbero[]> {
   if (!supabaseConfigurado()) return barberosRespaldo;
 
   // Columnas públicas solamente: el rol anon no puede leer whatsapp ni user_id.

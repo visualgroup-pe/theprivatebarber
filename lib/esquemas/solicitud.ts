@@ -57,10 +57,11 @@ export const esquemaSolicitud = z
     /** Trampa para bots: los humanos no ven este campo. */
     sitio: z.string().optional(),
   })
-  .superRefine((d, ctx) => {
-    if (d.zonaId === OTRO_DISTRITO_ID && !d.distritoOtro) {
-      ctx.addIssue({ code: "custom", path: ["distritoOtro"], message: "Escribe tu distrito." });
-    }
+  .refine((d) => d.zonaId !== OTRO_DISTRITO_ID || Boolean(d.distritoOtro), {
+    path: ["distritoOtro"],
+    message: "Escribe tu distrito.",
+    // Corre aunque falten otros campos.
+    when: (p) => (p.value as { zonaId?: unknown } | null)?.zonaId === OTRO_DISTRITO_ID,
   });
 
 export type SolicitudEntrada = z.input<typeof esquemaSolicitud>;

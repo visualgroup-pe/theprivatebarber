@@ -1,4 +1,4 @@
-/** Capa fija con grano.png al 9 % en modo overlay. */
+/** Capa fija con grano.webp al 9 % en modo overlay. */
 export function Grano() {
   return <div className="grano" aria-hidden="true" />;
 }

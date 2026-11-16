@@ -42,3 +42,8 @@ next-env.d.ts
 
 # env de ejemplo sí se versiona
 !.env.example
+
+# Pruebas E2E
+/pruebas/.cuentas.json
+/test-results/
+/playwright-report/
