@@ -2,9 +2,11 @@
 
 import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { z } from "zod";
 import type { ResultadoAccion } from "@/lib/acciones/citas";
 import { obtenerUsuario } from "@/lib/auth";
+import { avisarCita, avisarReclamacion } from "@/lib/avisos";
 import { ETIQUETA_CATALOGO } from "@/lib/catalogo";
 import { mensajeDeError } from "@/lib/estados";
 import { erroresPorCampo, esquemaSolicitud, normalizarWhatsapp, OTRO_DISTRITO_ID } from "@/lib/esquemas/solicitud";
@@ -229,7 +231,7 @@ export async function responderReclamacion(_p: ResultadoAccion, fd: FormData): P
     .eq("id", texto(fd, "id"));
   const fallo = errorDb(error);
   if (fallo) return fallo;
-  // TODO etapa 7: enviar la respuesta al correo del consumidor.
+  after(() => avisarReclamacion(texto(fd, "id"), "respondida"));
   revalidatePath("/admin/reclamaciones");
   return { ok: true, mensaje: "Respuesta guardada." };
 }
@@ -282,7 +284,7 @@ export async function registrarSolicitud(_p: ResultadoAccion, fd: FormData): Pro
     p_origen: "whatsapp",
   } as unknown as ArgsCrear);
   if (error || !cita) return { ok: false, mensaje: mensajeDeError(error?.message) };
-  // TODO etapa 7: avisar al barbero de la nueva solicitud.
+  after(() => avisarCita(cita.id, "solicitud_recibida"));
   revalidatePath("/admin", "layout");
   redirect(`/admin/citas/${cita.id}`);
 }

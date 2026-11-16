@@ -39,5 +39,22 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 4. ✅ Supabase: esquema, RLS y semillas (ver `supabase/LEEME.md`; `npm run db:probar`).
 5. ✅ Formulario de solicitud (escritorio en la portada; móvil en `/reserva`, 3 pasos), `/api/solicitudes` y confirmación.
 6. ✅ Paneles del barbero (`/barbero`) y de administración (`/admin`) con Supabase Auth; ingreso en `/ingresar`.
-7. Avisos por correo y WhatsApp.
+7. ✅ Avisos por correo (Resend) y WhatsApp Cloud API, recordatorio de 24 h y alerta por falta de respuesta (ver «Avisos»).
 8. SEO, datos estructurados, Lighthouse y pruebas.
+
+## Avisos
+
+| Momento | Cliente | Barbero | Administración |
+| --- | --- | --- | --- |
+| Solicitud nueva (web o registrada a mano) | WhatsApp + correo «solicitud recibida» | WhatsApp con enlace a su panel | — |
+| El barbero acepta | WhatsApp + correo «cita confirmada» con la hora | — | — |
+| Otro horario propuesto | WhatsApp + correo «nuevo horario» | — | — |
+| Rechazada / cancelada | WhatsApp + correo | — | — |
+| 24 h antes | WhatsApp + correo «recordatorio» | — | — |
+| Sin respuesta del barbero en N horas | — | — | WhatsApp + correo |
+| Hoja de reclamación | Copia por correo; respuesta por correo | — | Correo |
+
+- Salen en segundo plano (`after()`), sin demorar la respuesta. Un canal sin claves se omite.
+- Cada aviso queda en la tabla `avisos` con su estado; el webhook `/api/whatsapp/webhook` actualiza «entregado» y «leído».
+- `/api/cron/avisos` corre cada hora (Vercel Cron, `vercel.json`) y exige `CRON_SECRET`.
+- Plantillas de WhatsApp para aprobar en Meta: `docs/plantillas-whatsapp.md`.

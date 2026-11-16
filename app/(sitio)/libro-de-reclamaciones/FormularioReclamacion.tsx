@@ -56,7 +56,10 @@ export function FormularioReclamacion() {
           N.° <span className="font-mono text-[0.6em]">{estado.correlativo}</span>
         </p>
         <p className="mt-5 mb-0 max-w-[520px] text-[17px] leading-[1.6] text-tabaco">
-          Te enviamos una copia a {estado.correo}. Te responderemos en un plazo no mayor a quince (15) días hábiles.
+          {estado.copiaPorCorreo
+            ? `Te enviamos una copia a ${estado.correo}. `
+            : "Guarda este número: identifica tu hoja. "}
+          Te responderemos en un plazo no mayor a quince (15) días hábiles.
         </p>
       </div>
     );

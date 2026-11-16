@@ -9,6 +9,63 @@ export type Database = {
   };
   public: {
     Tables: {
+      avisos: {
+        Row: {
+          actualizado_en: string;
+          canal: string;
+          cita_id: string | null;
+          creado_en: string;
+          destinatario: string;
+          error: string | null;
+          estado: string;
+          id: number;
+          plantilla: string;
+          proveedor_id: string | null;
+          reclamacion_id: string | null;
+        };
+        Insert: {
+          actualizado_en?: string;
+          canal: string;
+          cita_id?: string | null;
+          creado_en?: string;
+          destinatario: string;
+          error?: string | null;
+          estado: string;
+          id?: never;
+          plantilla: string;
+          proveedor_id?: string | null;
+          reclamacion_id?: string | null;
+        };
+        Update: {
+          actualizado_en?: string;
+          canal?: string;
+          cita_id?: string | null;
+          creado_en?: string;
+          destinatario?: string;
+          error?: string | null;
+          estado?: string;
+          id?: never;
+          plantilla?: string;
+          proveedor_id?: string | null;
+          reclamacion_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "avisos_cita_id_fkey";
+            columns: ["cita_id"];
+            isOneToOne: false;
+            referencedRelation: "citas";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "avisos_reclamacion_id_fkey";
+            columns: ["reclamacion_id"];
+            isOneToOne: false;
+            referencedRelation: "reclamaciones";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       barberos: {
         Row: {
           activo: boolean;
@@ -95,6 +152,7 @@ export type Database = {
       citas: {
         Row: {
           actualizado_en: string;
+          alerta_admin_enviada_en: string | null;
           barbero_id: string;
           cliente_id: string;
           con_asesoria: boolean;
@@ -115,6 +173,7 @@ export type Database = {
           propuesta_fecha: string | null;
           propuesta_franja: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora: string | null;
+          recordatorio_enviado_en: string | null;
           referencia: string | null;
           revision_zona: boolean | null;
           servicio_id: string;
@@ -122,6 +181,7 @@ export type Database = {
         };
         Insert: {
           actualizado_en?: string;
+          alerta_admin_enviada_en?: string | null;
           barbero_id: string;
           cliente_id: string;
           con_asesoria?: boolean;
@@ -142,6 +202,7 @@ export type Database = {
           propuesta_fecha?: string | null;
           propuesta_franja?: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora?: string | null;
+          recordatorio_enviado_en?: string | null;
           referencia?: string | null;
           revision_zona?: boolean | null;
           servicio_id: string;
@@ -149,6 +210,7 @@ export type Database = {
         };
         Update: {
           actualizado_en?: string;
+          alerta_admin_enviada_en?: string | null;
           barbero_id?: string;
           cliente_id?: string;
           con_asesoria?: boolean;
@@ -169,6 +231,7 @@ export type Database = {
           propuesta_fecha?: string | null;
           propuesta_franja?: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora?: string | null;
+          recordatorio_enviado_en?: string | null;
           referencia?: string | null;
           revision_zona?: boolean | null;
           servicio_id?: string;
@@ -477,6 +540,7 @@ export type Database = {
         };
         Returns: {
           actualizado_en: string;
+          alerta_admin_enviada_en: string | null;
           barbero_id: string;
           cliente_id: string;
           con_asesoria: boolean;
@@ -497,6 +561,7 @@ export type Database = {
           propuesta_fecha: string | null;
           propuesta_franja: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora: string | null;
+          recordatorio_enviado_en: string | null;
           referencia: string | null;
           revision_zona: boolean | null;
           servicio_id: string;
@@ -530,6 +595,7 @@ export type Database = {
         };
         Returns: {
           actualizado_en: string;
+          alerta_admin_enviada_en: string | null;
           barbero_id: string;
           cliente_id: string;
           con_asesoria: boolean;
@@ -550,6 +616,7 @@ export type Database = {
           propuesta_fecha: string | null;
           propuesta_franja: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora: string | null;
+          recordatorio_enviado_en: string | null;
           referencia: string | null;
           revision_zona: boolean | null;
           servicio_id: string;

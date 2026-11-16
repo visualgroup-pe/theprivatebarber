@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { franjas } from "@/content/zonas";
 import { obtenerBarberos, obtenerServicios, obtenerZonas } from "@/lib/catalogo";
 import {
@@ -9,6 +9,7 @@ import {
   type ErroresSolicitud,
   type RespuestaSolicitud,
 } from "@/lib/esquemas/solicitud";
+import { avisarCita } from "@/lib/avisos";
 import { crearClienteServicio, servidorConfigurado } from "@/lib/supabase/admin";
 import type { Database } from "@/lib/supabase/tipos";
 
@@ -110,7 +111,8 @@ export async function POST(request: Request) {
     return responder({ ok: false, mensaje: MENSAJE_GENERAL }, 500);
   }
 
-  // TODO etapa 7: avisar al barbero por WhatsApp y al cliente («solicitud recibida»).
+  // Avisos al cliente («solicitud recibida») y al barbero, sin demorar la respuesta.
+  after(() => avisarCita(cita.id, "solicitud_recibida"));
 
   const barbero = barberos.find((b) => b.id === d.barberoId)!;
   return responder(

@@ -6,13 +6,16 @@ import {
   reclamacionDesdeFormData,
   type ErroresReclamacion,
 } from "@/lib/esquemas/reclamacion";
+import { after } from "next/server";
+import { avisarReclamacion } from "@/lib/avisos";
+import { correoActivo } from "@/lib/avisos/config";
 import { crearClienteServicio, servidorConfigurado } from "@/lib/supabase/admin";
 
 export type EstadoReclamacion =
   | { estado: "inicial" }
   | { estado: "errores"; errores: ErroresReclamacion; valores: Record<string, string> }
   | { estado: "no-disponible"; mensaje: string; valores: Record<string, string> }
-  | { estado: "registrada"; correlativo: string; correo: string };
+  | { estado: "registrada"; correlativo: string; correo: string; copiaPorCorreo: boolean };
 
 function valoresDe(fd: FormData): Record<string, string> {
   const valores: Record<string, string> = {};
@@ -66,7 +69,7 @@ export async function registrarReclamacion(
       anio: 0,
       numero: 0,
     })
-    .select("correlativo")
+    .select("id, correlativo")
     .single();
 
   if (error || !data?.correlativo) {
@@ -78,6 +81,7 @@ export async function registrarReclamacion(
     };
   }
 
-  // TODO etapa 7: enviar la copia de la hoja al correo del consumidor (Resend).
-  return { estado: "registrada", correlativo: data.correlativo, correo: d.correo };
+  // Copia al consumidor y aviso a la administración, sin demorar la respuesta.
+  after(() => avisarReclamacion(data.id, "registrada"));
+  return { estado: "registrada", correlativo: data.correlativo, correo: d.correo, copiaPorCorreo: correoActivo() };
 }

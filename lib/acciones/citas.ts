@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { z } from "zod";
 import { obtenerUsuario } from "@/lib/auth";
+import { avisarCita } from "@/lib/avisos";
 import { mensajeDeError } from "@/lib/estados";
 import { crearClienteServidor } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/tipos";
@@ -66,7 +68,11 @@ export async function cambiarEstado(_previo: ResultadoAccion, fd: FormData): Pro
   } as unknown as Args);
   if (error) return { ok: false, mensaje: mensajeDeError(error.message) };
 
-  // TODO etapa 7: avisar al cliente por WhatsApp y correo del nuevo estado.
+  // El cliente recibe el aviso del nuevo estado (completada no se avisa).
+  const estado = d.estado;
+  if (estado === "confirmada" || estado === "reprogramacion" || estado === "rechazada" || estado === "cancelada") {
+    after(() => avisarCita(d.id, estado));
+  }
   revalidatePath("/barbero", "layout");
   revalidatePath("/admin", "layout");
   return { ok: true, mensaje: LISTO[d.estado] };
