@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import { openGraphDe } from "@/lib/sitio";
 import { PaginaLegal } from "@/components/bloques/PaginaLegal";
 import { empresa } from "@/lib/empresa";
 import { FormularioReclamacion } from "./FormularioReclamacion";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/libro-de-reclamaciones" },
+  openGraph: openGraphDe("/libro-de-reclamaciones"),
   title: "Libro de Reclamaciones",
   description:
     "Libro de Reclamaciones virtual de The Private Barber, conforme al Código de Protección y Defensa del Consumidor.",

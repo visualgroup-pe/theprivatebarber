@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { openGraphDe } from "@/lib/sitio";
 import Link from "next/link";
 import { PaginaLegal, type SeccionLegal } from "@/components/bloques/PaginaLegal";
 import { correoVisible, enlaceCorreo } from "@/lib/contacto";
 import { empresa } from "@/lib/empresa";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacidad" },
+  openGraph: openGraphDe("/privacidad"),
   title: "Política de privacidad",
   description:
     "Cómo The Private Barber trata tus datos personales conforme a la Ley N.° 29733, Ley de Protección de Datos Personales.",

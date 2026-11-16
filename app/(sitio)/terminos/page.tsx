@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraphDe } from "@/lib/sitio";
 import Link from "next/link";
 import { PaginaLegal, type SeccionLegal } from "@/components/bloques/PaginaLegal";
 import { obtenerServicios, obtenerZonas } from "@/lib/catalogo";
@@ -7,6 +8,8 @@ import { empresa } from "@/lib/empresa";
 import { soles } from "@/lib/tokens";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terminos" },
+  openGraph: openGraphDe("/terminos"),
   title: "Términos y condiciones",
   description:
     "Condiciones del servicio de barbería a domicilio de The Private Barber: reservas, precios, pagos, reprogramación y cancelación.",

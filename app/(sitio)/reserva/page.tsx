@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { openGraphDe } from "@/lib/sitio";
 import { FlujoMovil } from "@/components/reserva/FlujoMovil";
 import { obtenerBarberos, obtenerServicios, obtenerZonas } from "@/lib/catalogo";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/reserva" },
+  openGraph: openGraphDe("/reserva"),
   title: "Reservar una cita",
   description: "Solicita tu cita de corte, barba o asesoría de imagen a domicilio en Lima, en tres pasos.",
 };

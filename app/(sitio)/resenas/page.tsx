@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraphDe } from "@/lib/sitio";
 import { NavFija } from "@/components/bloques/NavFija";
 import { Pie } from "@/components/bloques/Pie";
 import { Boton } from "@/components/ui/Boton";
@@ -8,6 +9,8 @@ import { perfilGoogle, resenas } from "@/content/resenas";
 import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/resenas" },
+  openGraph: openGraphDe("/resenas"),
   title: "Reseñas",
   description:
     "Reseñas de clientes de The Private Barber en Google Maps, copiadas tal como las escribieron: sin editar y sin elegir solo las mejores frases.",

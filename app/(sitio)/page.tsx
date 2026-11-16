@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
+import { openGraphDe } from "@/lib/sitio";
 import { Asesoria } from "@/components/bloques/Asesoria";
 import { Barberos } from "@/components/bloques/Barberos";
 import { Carta } from "@/components/bloques/Carta";
+import { DatosEstructurados } from "@/components/bloques/DatosEstructurados";
 import { ComoReservar } from "@/components/bloques/ComoReservar";
 import { Hero } from "@/components/bloques/Hero";
 import { LaVisita } from "@/components/bloques/LaVisita";
@@ -12,10 +15,16 @@ import { Resenas } from "@/components/bloques/Resenas";
 import { Reserva } from "@/components/bloques/Reserva";
 import { Zonas } from "@/components/bloques/Zonas";
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: openGraphDe("/"),
+};
+
 /** Portada: orden de bloques del lienzo (referencia/diseno/Main.dc.html). */
 export default function Portada() {
   return (
     <div className="pagina">
+      <DatosEstructurados />
       <NavFija />
       <main>
         <Hero />
