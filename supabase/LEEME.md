@@ -7,6 +7,7 @@ Esquema, reglas y permisos de la v1. Todo vive en `migrations/`; las semillas en
 | `migrations/…100_esquema.sql` | Tipos y tablas: servicios, barberos, horarios, zonas, clientes, citas, cita_eventos, reclamaciones, perfiles y correlativos |
 | `migrations/…200_reglas.sql` | Reglas del negocio en triggers y funciones (ver abajo) |
 | `migrations/…300_seguridad.sql` | RLS y permisos por rol |
+| `migrations/…400_ajustes_asesor.sql` | Ajustes del asesor de Supabase: funciones de rol en esquema privado, una política por acción, índices |
 | `seed.sql` | Carta, zonas, barberos y horarios del brief (se puede repetir sin duplicar) |
 | `pruebas/` | Pruebas locales (`npm run db:probar`) con un Postgres desechable |
 
@@ -45,35 +46,47 @@ solicitud_recibida → pendiente → ¿acepta? ─ sí ──→ confirmada → 
 
 El WhatsApp de los barberos no es público.
 
-## Conectar el proyecto real
+## Proyecto
 
-1. Crear el proyecto en Supabase (región São Paulo, la más cercana a Lima) y copiar la URL y las claves en `.env.local` (ver `.env.example`).
-2. Enlazar y aplicar las migraciones:
+- **theprivatebarber** · ref `mqrqdmmexrpheljkpthg` · São Paulo (`sa-east-1`) · Postgres 17 · plan gratuito (pasar a Pro antes del lanzamiento).
+- Organización: visualgroup-pe's Org.
+- Migraciones aplicadas: las cuatro de `migrations/` y `seed.sql`. Asesor de Supabase: sin advertencias (solo avisos informativos esperados).
+- Claves de API: la publicable va en la web; para el servidor, crear en el panel una clave secreta para producción (Vercel). La clave secreta `claude_dev` es solo del contenedor de desarrollo: se puede revocar en Project Settings → API Keys.
 
-   ```bash
-   npx supabase login
-   ```
+## Aplicar cambios
 
-   ```bash
-   npx supabase link --project-ref <ref-del-proyecto>
-   ```
+Con un token de acceso personal (Account → Access Tokens), sin conexión directa a Postgres:
 
-   ```bash
-   npx supabase db push --include-seed
-   ```
+```bash
+SUPABASE_ACCESS_TOKEN=<token> SUPABASE_PROJECT_REF=mqrqdmmexrpheljkpthg npm run db:migrar
+```
 
-3. Regenerar los tipos de TypeScript: `npm run db:tipos`.
-4. Crear las cuentas del panel en Authentication → Users (el registro público está desactivado) y darles rol en el SQL editor:
+```bash
+SUPABASE_ACCESS_TOKEN=<token> SUPABASE_PROJECT_REF=mqrqdmmexrpheljkpthg npm run db:tipos
+```
 
-   ```sql
-   insert into public.perfiles (id, rol, nombre)
-   values ('<uuid del usuario>', 'admin', 'Administración');
+`db:migrar` aplica solo las migraciones nuevas, cada una en una transacción, y las registra en
+`supabase_migrations.schema_migrations` (compatible con `supabase db push`). Con `-- --semillas` vuelve a cargar `seed.sql`.
 
-   insert into public.perfiles (id, rol, nombre)
-   values ('<uuid del usuario de Nilber>', 'barber', 'Nilber');
-   update public.barberos set user_id = '<uuid del usuario de Nilber>', whatsapp = '9XXXXXXXX'
-   where slug = 'nilber';
-   ```
+Comprobar el proyecto real como lo usa la web (visitante y servidor; crea y borra una solicitud de prueba):
+
+```bash
+node --env-file=.env.local scripts/verificar-remoto.mjs
+```
+
+## Cuentas del panel
+
+Crear las cuentas en Authentication → Users (el registro público está desactivado) y darles rol en el SQL editor:
+
+```sql
+insert into public.perfiles (id, rol, nombre)
+values ('<uuid del usuario>', 'admin', 'Administración');
+
+insert into public.perfiles (id, rol, nombre)
+values ('<uuid del usuario de Nilber>', 'barber', 'Nilber');
+update public.barberos set user_id = '<uuid del usuario de Nilber>', whatsapp = '9XXXXXXXX'
+where slug = 'nilber';
+```
 
 ## Pruebas locales
 

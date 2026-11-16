@@ -1,8 +1,12 @@
-// Generado con: npm run db:tipos (supabase gen types). No editar a mano.
-
+// Generado con: npm run db:tipos (Supabase · proyecto theprivatebarber). No editar a mano.
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.18";
+  };
   public: {
     Tables: {
       barberos: {
@@ -19,7 +23,6 @@ export type Database = {
           user_id: string | null;
           whatsapp: string | null;
         };
-        ComputedFields: never;
         Insert: {
           activo?: boolean;
           anos_oficio?: number | null;
@@ -59,7 +62,6 @@ export type Database = {
           id: number;
           nota: string | null;
         };
-        ComputedFields: never;
         Insert: {
           actor: string;
           actor_id?: string | null;
@@ -118,7 +120,6 @@ export type Database = {
           servicio_id: string;
           zona_id: string | null;
         };
-        ComputedFields: never;
         Insert: {
           actualizado_en?: string;
           barbero_id: string;
@@ -137,12 +138,12 @@ export type Database = {
           origen?: Database["public"]["Enums"]["origen_cita"];
           precio_asesoria_pen?: number;
           precio_servicio_pen?: number;
-          precio_total_pen?: never;
+          precio_total_pen?: number | null;
           propuesta_fecha?: string | null;
           propuesta_franja?: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora?: string | null;
           referencia?: string | null;
-          revision_zona?: never;
+          revision_zona?: boolean | null;
           servicio_id: string;
           zona_id?: string | null;
         };
@@ -164,12 +165,12 @@ export type Database = {
           origen?: Database["public"]["Enums"]["origen_cita"];
           precio_asesoria_pen?: number;
           precio_servicio_pen?: number;
-          precio_total_pen?: never;
+          precio_total_pen?: number | null;
           propuesta_fecha?: string | null;
           propuesta_franja?: Database["public"]["Enums"]["franja"] | null;
           propuesta_hora?: string | null;
           referencia?: string | null;
-          revision_zona?: never;
+          revision_zona?: boolean | null;
           servicio_id?: string;
           zona_id?: string | null;
         };
@@ -216,7 +217,6 @@ export type Database = {
           nombre: string;
           whatsapp: string;
         };
-        ComputedFields: never;
         Insert: {
           actualizado_en?: string;
           consentimiento_datos: boolean;
@@ -246,7 +246,6 @@ export type Database = {
           anio: number;
           ultimo: number;
         };
-        ComputedFields: never;
         Insert: {
           anio: number;
           ultimo?: number;
@@ -265,7 +264,6 @@ export type Database = {
           hora_inicio: string;
           id: string;
         };
-        ComputedFields: never;
         Insert: {
           barbero_id: string;
           dia_semana: number;
@@ -297,7 +295,6 @@ export type Database = {
           nombre: string;
           rol: Database["public"]["Enums"]["rol_panel"];
         };
-        ComputedFields: never;
         Insert: {
           creado_en?: string;
           id: string;
@@ -337,12 +334,11 @@ export type Database = {
           tipo_bien: Database["public"]["Enums"]["tipo_bien"];
           tipo_documento: string;
         };
-        ComputedFields: never;
         Insert: {
           anio: number;
           apoderado?: string | null;
           copia_enviada_en?: string | null;
-          correlativo?: never;
+          correlativo?: string | null;
           correo: string;
           creado_en?: string;
           descripcion_bien: string;
@@ -366,7 +362,7 @@ export type Database = {
           anio?: number;
           apoderado?: string | null;
           copia_enviada_en?: string | null;
-          correlativo?: never;
+          correlativo?: string | null;
           correo?: string;
           creado_en?: string;
           descripcion_bien?: string;
@@ -403,7 +399,6 @@ export type Database = {
           precio_pen: number;
           slug: string;
         };
-        ComputedFields: never;
         Insert: {
           activo?: boolean;
           descripcion?: string;
@@ -441,7 +436,6 @@ export type Database = {
           id: string;
           orden: number;
         };
-        ComputedFields: never;
         Insert: {
           activo?: boolean;
           distrito: string;
@@ -461,10 +455,14 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      actor_actual: { Args: Record<PropertyKey, never>; Returns: string };
-      barbero_actual: { Args: Record<PropertyKey, never>; Returns: string };
+      actor_actual: { Args: never; Returns: string };
+      barbero_actual: { Args: never; Returns: string };
       barbero_atiende: {
-        Args: { p_barbero: string; p_fecha: string; p_franja: Database["public"]["Enums"]["franja"] };
+        Args: {
+          p_barbero: string;
+          p_fecha: string;
+          p_franja: Database["public"]["Enums"]["franja"];
+        };
         Returns: boolean;
       };
       cambiar_estado_cita: {
@@ -564,29 +562,41 @@ export type Database = {
           isSetofReturn: false;
         };
       };
-      es_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
-      franja_fin: { Args: { f: Database["public"]["Enums"]["franja"] }; Returns: string };
-      franja_inicio: { Args: { f: Database["public"]["Enums"]["franja"] }; Returns: string };
-      hora_en_franja: { Args: { p_franja: Database["public"]["Enums"]["franja"]; p_hora: string }; Returns: boolean };
-      hoy_lima: { Args: Record<PropertyKey, never>; Returns: string };
+      es_admin: { Args: never; Returns: boolean };
+      franja_fin: {
+        Args: { f: Database["public"]["Enums"]["franja"] };
+        Returns: string;
+      };
+      franja_inicio: {
+        Args: { f: Database["public"]["Enums"]["franja"] };
+        Returns: string;
+      };
+      hora_en_franja: {
+        Args: {
+          p_franja: Database["public"]["Enums"]["franja"];
+          p_hora: string;
+        };
+        Returns: boolean;
+      };
+      hoy_lima: { Args: never; Returns: string };
       transicion_de_barbero: {
-        Args: { a: Database["public"]["Enums"]["estado_cita"]; de: Database["public"]["Enums"]["estado_cita"] };
+        Args: {
+          a: Database["public"]["Enums"]["estado_cita"];
+          de: Database["public"]["Enums"]["estado_cita"];
+        };
         Returns: boolean;
       };
       transicion_valida: {
-        Args: { a: Database["public"]["Enums"]["estado_cita"]; de: Database["public"]["Enums"]["estado_cita"] };
+        Args: {
+          a: Database["public"]["Enums"]["estado_cita"];
+          de: Database["public"]["Enums"]["estado_cita"];
+        };
         Returns: boolean;
       };
     };
     Enums: {
       estado_cita:
-        | "solicitud_recibida"
-        | "pendiente"
-        | "confirmada"
-        | "rechazada"
-        | "reprogramacion"
-        | "cancelada"
-        | "completada";
+        "solicitud_recibida" | "pendiente" | "confirmada" | "rechazada" | "reprogramacion" | "cancelada" | "completada";
       franja: "manana" | "mediodia" | "tarde" | "noche";
       lugar_atencion: "casa" | "oficina" | "hotel";
       origen_cita: "web" | "whatsapp";
@@ -606,15 +616,16 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+    keyof (DefaultSchema["Tables"] & DefaultSchema["Views"]) | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R;
@@ -631,12 +642,14 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I;
     }
@@ -652,12 +665,14 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U;
     }
@@ -673,12 +688,14 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"] | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+    : never) = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
@@ -686,14 +703,15 @@ export type Enums<
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    keyof DefaultSchema["CompositeTypes"] | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+    : never) = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]

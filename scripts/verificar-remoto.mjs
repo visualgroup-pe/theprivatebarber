@@ -43,8 +43,6 @@ const wsp = await visitante.from("barberos").select("whatsapp");
 ok(Boolean(wsp.error), "el visitante no ve el WhatsApp de los barberos", wsp.error?.message);
 const clientes = await visitante.from("clientes").select("id");
 ok(Boolean(clientes.error), "el visitante no lee clientes", clientes.error?.message);
-const rpc = await visitante.rpc("crear_solicitud", {});
-ok(Boolean(rpc.error), "el visitante no llama a crear_solicitud", rpc.error?.message);
 
 // ── Servidor (clave secreta): una solicitud de prueba ──
 const { data: ids } = await servidor.from("barberos").select("id, slug");
@@ -53,7 +51,7 @@ const { data: zona } = await servidor.from("zonas").select("id").eq("distrito", 
 const { data: hoy } = await servidor.rpc("hoy_lima");
 const fecha = new Date(`${hoy}T12:00:00Z`);
 fecha.setUTCDate(fecha.getUTCDate() + ((4 - (fecha.getUTCDay() || 7) + 7) % 7) + 7); // un jueves futuro
-const cita = await servidor.rpc("crear_solicitud", {
+const params = {
   p_nombre: "Prueba Automática",
   p_whatsapp: "900000001",
   p_correo: null,
@@ -69,7 +67,14 @@ const cita = await servidor.rpc("crear_solicitud", {
   p_referencia: null,
   p_fecha: fecha.toISOString().slice(0, 10),
   p_franja: "tarde",
-});
+};
+const directo = await visitante.rpc("crear_solicitud", params);
+ok(
+  directo.error?.code === "42501",
+  "el visitante no puede crear solicitudes directo (solo por la ruta de API)",
+  directo.error?.message,
+);
+const cita = await servidor.rpc("crear_solicitud", params);
 ok(
   !cita.error && cita.data.estado === "solicitud_recibida" && cita.data.precio_total_pen === 350,
   "el servidor crea una solicitud (S/ 350, «solicitud recibida»)",
