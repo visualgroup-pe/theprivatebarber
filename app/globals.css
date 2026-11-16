@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./bloques.css";
 
 /*
  * The Private Barber · sistema de diseño
@@ -42,6 +43,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* El lienzo no fija interlineado global: se usa el «normal» del navegador */
+    line-height: normal;
   }
   body {
     margin: 0;
@@ -49,7 +52,6 @@
     color: var(--color-obsidiana);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
   }
   a {
     color: inherit;
@@ -479,25 +481,32 @@
 
 /* Respaldo con IntersectionObserver (Safari y Firefox).
    El observador añade .rv-io a <html> solo si view() no existe. */
+/* Se oculta sin transición (no hay parpadeo) y solo se anima la aparición. */
 .rv-io .revelar {
   opacity: 0;
   transform: translateY(36px);
-  transition:
-    opacity 1.3s var(--e),
-    transform 1.3s var(--e);
 }
 .rv-io .cortina {
   clip-path: inset(18% 0 0 0);
   transform: scale(1.08);
-  transition:
-    clip-path 1.4s var(--e),
-    transform 1.4s var(--e);
 }
 .rv-io .revelar.visto,
 .rv-io .cortina.visto {
   opacity: 1;
   transform: none;
   clip-path: inset(0 0 0 0);
+}
+.rv-io .revelar.visto {
+  /* padding: conserva el desplazamiento de .mitem al pasar el cursor */
+  transition:
+    opacity 1.3s var(--e),
+    transform 1.3s var(--e),
+    padding 0.6s var(--e);
+}
+.rv-io .cortina.visto {
+  transition:
+    clip-path 1.4s var(--e),
+    transform 1.4s var(--e);
 }
 
 /* Con movimiento reducido se apaga todo movimiento */

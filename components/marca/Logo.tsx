@@ -20,6 +20,8 @@ type Props = {
   /** Alto en px (el ancho sale de la proporción). */
   alto?: number;
   alt?: string;
+  /** Sobre el pliegue (nav): carga inmediata */
+  eager?: boolean;
   className?: string;
   style?: React.CSSProperties;
 };
@@ -29,6 +31,7 @@ export function Logo({
   fondo = "claro",
   alto = 28,
   alt = "The Private Barber",
+  eager,
   className,
   style,
 }: Props) {
@@ -41,8 +44,10 @@ export function Logo({
       width={ancho}
       height={alto}
       unoptimized
+      loading={eager ? "eager" : undefined}
       className={className}
-      style={{ height: alto, width: "auto", ...style }}
+      // Ancho fijo y alto proporcional: si no cabe (nav a 390 px), se reduce sin deformarse.
+      style={{ width: ancho, height: "auto", maxWidth: "100%", ...style }}
     />
   );
 }

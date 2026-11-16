@@ -15,7 +15,7 @@ npm install
 npm run dev
 ```
 
-- `/`: portada (etapa 2).
+- `/`: portada.
 - `/ui`: muestrario de componentes, solo en desarrollo.
 
 ## Sistema de diseño
@@ -29,7 +29,7 @@ npm run dev
 ## Etapas
 
 1. ✅ Proyecto base, tokens, fuentes y componentes `ui/`.
-2. Portada completa estática.
+2. ✅ Portada completa estática.
 3. Reseñas y páginas legales.
 4. Supabase: esquema, RLS y semillas.
 5. Formulario de solicitud y confirmación.

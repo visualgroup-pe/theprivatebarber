@@ -1,0 +1,255 @@
+/*
+ * Maquetación de los bloques de la portada y reseñas.
+ * Copiada de referencia/diseno/Main.dc.html, reescrita mobile first:
+ * base = móvil, @media (min-width: 961px) = escritorio (el lienzo usa max-width: 960px).
+ * En capa components para que las utilidades (los estilos en línea del lienzo) ganen.
+ */
+@layer components {
+  /* Envoltura de página (.wrap): clip en vez de hidden para no romper el sticky */
+  .pagina {
+    position: relative;
+    overflow-x: clip;
+    background: var(--color-lino);
+    color: var(--color-obsidiana);
+  }
+
+  /* .hm del lienzo: oculto en móvil */
+  @media (max-width: 960px) {
+    .solo-escritorio {
+      display: none !important;
+    }
+  }
+
+  /* ── Nav fija ── */
+  .nav {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 24px;
+    height: 78px;
+  }
+  .nav__izq,
+  .nav__der {
+    display: flex;
+    gap: 34px;
+    align-items: center;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .nav__izq {
+    display: none;
+  }
+  .nav__der {
+    justify-content: flex-end;
+  }
+  .nav__logo {
+    justify-self: start;
+  }
+
+  /* ── Hero ── */
+  .hero-h {
+    margin: 0;
+    font-size: clamp(78px, 14vw, 236px);
+    line-height: 0.84;
+    letter-spacing: -0.04em;
+  }
+  .hero-h .l2 {
+    display: block;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 5vw, 88px);
+    align-items: end;
+  }
+  .hero-fig {
+    position: relative;
+  }
+  .hero-fig .hero-inset {
+    display: none;
+  }
+
+  /* ── Manifiesto: par de fotos ── */
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 3vw, 40px);
+    align-items: start;
+  }
+
+  /* ── La visita: carril con scroll horizontal ── */
+  .rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: clamp(280px, 29vw, 430px);
+    gap: clamp(16px, 2vw, 28px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 clamp(20px, 4vw, 64px) 28px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-tabaco) transparent;
+  }
+  .rail > * {
+    scroll-snap-align: start;
+  }
+
+  /* ── La carta ── */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 6vw, 110px);
+    align-items: start;
+  }
+  .mrow {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .mrow .dots {
+    flex: 1;
+    min-width: 24px;
+    border-bottom: 1px dotted rgba(90, 70, 54, 0.6);
+    transform: translateY(-7px);
+  }
+  .mitem {
+    padding: 26px 0;
+    border-bottom: 1px solid var(--color-piedra);
+    transition: padding 0.6s var(--e);
+  }
+  .mitem:hover {
+    padding-left: 12px;
+  }
+
+  /* ── Asesoría ── */
+  .ases {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+  .ases-card {
+    position: relative;
+    z-index: 2;
+    margin: -80px 16px 0;
+  }
+
+  /* ── Cómo reservar ── */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    row-gap: 40px;
+    position: relative;
+  }
+
+  /* ── Barberos ── */
+  .barb {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+  }
+  .bname {
+    margin: -0.42em 0 0;
+    position: relative;
+    z-index: 2;
+    font-size: clamp(96px, 13vw, 210px);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+  }
+
+  /* ── Reseñas ── */
+  .revs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 3vw, 48px);
+    align-items: start;
+  }
+
+  /* ── Preguntas ── */
+  .faq {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 6vw, 110px);
+  }
+
+  /* ── Reserva ── */
+  .book {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 961px) {
+    .nav {
+      grid-template-columns: 1fr auto 1fr;
+    }
+    .nav__izq {
+      display: flex;
+    }
+    .nav__logo {
+      justify-self: auto;
+    }
+    .hero-h .l2 {
+      padding-left: 22%;
+    }
+    .hero-grid {
+      grid-template-columns: 4fr 8fr;
+    }
+    .hero-fig .hero-inset {
+      display: block;
+      position: absolute;
+      left: -18%;
+      bottom: -72px;
+      width: 36%;
+      aspect-ratio: 3 / 4;
+      border: 12px solid var(--color-lino);
+      z-index: 2;
+    }
+    .duo {
+      grid-template-columns: 7fr 5fr;
+    }
+    .duo .b {
+      margin-top: clamp(60px, 10vw, 160px);
+    }
+    .split {
+      grid-template-columns: 5fr 7fr;
+    }
+    .ases {
+      grid-template-columns: 8fr 5fr;
+    }
+    .ases-card {
+      margin: 0 0 0 -22%;
+    }
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+      row-gap: 28px;
+    }
+    .steps::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 7px;
+      height: 1px;
+      background: var(--color-obsidiana);
+      opacity: 0.25;
+    }
+    .barb {
+      grid-template-columns: 7fr 5fr;
+    }
+    .revs {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .revs > :nth-child(2) {
+      margin-top: 110px;
+    }
+    .revs > :nth-child(3) {
+      margin-top: 40px;
+    }
+    .faq {
+      grid-template-columns: 4fr 8fr;
+    }
+    .book {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+}

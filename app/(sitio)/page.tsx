@@ -1,13 +1,36 @@
-import { Logo } from "@/components/marca/Logo";
+import { Asesoria } from "@/components/bloques/Asesoria";
+import { Barberos } from "@/components/bloques/Barberos";
+import { Carta } from "@/components/bloques/Carta";
+import { ComoReservar } from "@/components/bloques/ComoReservar";
+import { Hero } from "@/components/bloques/Hero";
+import { LaVisita } from "@/components/bloques/LaVisita";
+import { Manifiesto } from "@/components/bloques/Manifiesto";
+import { NavFija } from "@/components/bloques/NavFija";
+import { Pie } from "@/components/bloques/Pie";
+import { Preguntas } from "@/components/bloques/Preguntas";
+import { Resenas } from "@/components/bloques/Resenas";
+import { Reserva } from "@/components/bloques/Reserva";
+import { Zonas } from "@/components/bloques/Zonas";
 
-// Etapa 1: marcador. La portada completa llega en la etapa 2.
+/** Portada: orden de bloques del lienzo (referencia/diseno/Main.dc.html). */
 export default function Portada() {
   return (
-    <main className="contenedor flex min-h-dvh flex-col items-center justify-center gap-8 text-center">
-      <Logo alto={28} />
-      <p className="font-serif text-[clamp(44px,6vw,96px)] leading-[0.9] tracking-[-0.03em]">
-        Precisión <em className="text-huaca">en privado.</em>
-      </p>
-    </main>
+    <div className="pagina">
+      <NavFija />
+      <main>
+        <Hero />
+        <Manifiesto />
+        <LaVisita />
+        <Carta />
+        <Asesoria />
+        <ComoReservar />
+        <Barberos />
+        <Zonas />
+        <Resenas />
+        <Preguntas />
+        <Reserva />
+      </main>
+      <Pie />
+    </div>
   );
 }
