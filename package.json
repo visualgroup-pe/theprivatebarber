@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:probar": "bash scripts/probar-db.sh",
-    "db:tipos": "supabase gen types typescript --linked --schema public > lib/supabase/tipos.ts && prettier --write lib/supabase/tipos.ts --print-width 120"
+    "db:tipos": "node scripts/supabase-remoto.mjs tipos > lib/supabase/tipos.ts && prettier --write lib/supabase/tipos.ts --print-width 120",
+    "db:migrar": "node scripts/supabase-remoto.mjs migrar"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
