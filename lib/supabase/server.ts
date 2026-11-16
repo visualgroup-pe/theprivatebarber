@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
+import { connection } from "next/server";
 import { cookies } from "next/headers";
 import { SUPABASE_CLAVE_PUBLICA, SUPABASE_URL } from "./config";
 import type { Database } from "./tipos";
@@ -10,6 +11,8 @@ import type { Database } from "./tipos";
  * administración. Las políticas RLS deciden qué ve cada uno.
  */
 export async function crearClienteServidor() {
+  // Solo en tiempo de pedido: el cliente de Auth lee la hora al iniciar (Cache Components).
+  await connection();
   const almacen = await cookies();
   return createServerClient<Database>(SUPABASE_URL, SUPABASE_CLAVE_PUBLICA, {
     cookies: {

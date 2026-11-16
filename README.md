@@ -17,6 +17,8 @@ npm run dev
 
 - `/`: portada.
 - `/resenas`, `/privacidad`, `/terminos`, `/libro-de-reclamaciones`.
+- `/reserva`, `/reserva/confirmacion`: solicitud de cita en móvil y confirmación.
+- `/ingresar`, `/barbero`, `/admin`: paneles (requieren cuenta con rol; las crea la administración).
 - `/ui`: muestrario de componentes, solo en desarrollo.
 
 Copia `.env.example` a `.env.local` y completa los datos pendientes.
@@ -36,6 +38,6 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 3. ✅ Reseñas y páginas legales (textos legales en borrador: revisión de un abogado pendiente).
 4. ✅ Supabase: esquema, RLS y semillas (ver `supabase/LEEME.md`; `npm run db:probar`).
 5. ✅ Formulario de solicitud (escritorio en la portada; móvil en `/reserva`, 3 pasos), `/api/solicitudes` y confirmación.
-6. Paneles del barbero y de administración.
+6. ✅ Paneles del barbero (`/barbero`) y de administración (`/admin`) con Supabase Auth; ingreso en `/ingresar`.
 7. Avisos por correo y WhatsApp.
 8. SEO, datos estructurados, Lighthouse y pruebas.
