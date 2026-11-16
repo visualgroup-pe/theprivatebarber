@@ -1,0 +1,520 @@
+@import "tailwindcss";
+
+/*
+ * The Private Barber · sistema de diseño
+ * Fuente de verdad: referencia/diseno/*.dc.html (lienzo aprobado).
+ * Medidas, colores y tiempos copiados del lienzo, no interpretados.
+ */
+
+/* ── Tokens de marca ─────────────────────────────────────────────── */
+@theme {
+  /* Paleta (BRIEF · Sistema de diseño). Sin negro puro ni dorado. */
+  --color-obsidiana: #161b18;
+  --color-tabaco: #5a4636;
+  --color-huaca: #a0634a;
+  --color-huaca-profundo: #8e5640;
+  --color-huaca-claro: #c98a6e;
+  --color-lino: #eee9e1;
+  --color-piedra: #d8d1c5;
+  --color-garua: #c9ccc7;
+
+  /* El lienzo usa 961 px como corte entre móvil y escritorio. */
+  --breakpoint-lg: 961px;
+
+  /* Curvas de movimiento */
+  --ease-marca: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cortina: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@theme inline {
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-sans: var(--font-hanken-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+}
+
+/* ── Base ────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --e: var(--ease-marca);
+    --s: var(--ease-cortina);
+    color-scheme: light;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-lino);
+    color: var(--color-obsidiana);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a {
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-huaca);
+    outline-offset: 4px;
+  }
+  /* Instrument Serif nunca en negrita */
+  .font-serif {
+    font-weight: 400;
+  }
+}
+
+/* ── Utilidades del lienzo ──────────────────────────────────────── */
+/* .c del lienzo: contenedor de 1440 px con margen fluido */
+@utility contenedor {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 64px);
+}
+/* .lbl del lienzo: etiqueta en versalitas espaciadas */
+@utility etiqueta {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+/* .lbl de las pantallas móviles de reserva */
+@utility etiqueta-sm {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ── Componentes ─────────────────────────────────────────────────── */
+@layer components {
+  /* Boton (.cta): relleno Huaca que sube desde abajo en 0.7 s */
+  .boton {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    min-height: 58px;
+    padding: 0 26px 0 30px;
+    background: var(--color-obsidiana);
+    color: var(--color-lino);
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition:
+      color 0.5s var(--e),
+      box-shadow 0.7s var(--e);
+  }
+  .boton::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-huaca);
+    transform: translateY(101%);
+    transition: transform 0.7s var(--e);
+  }
+  .boton:hover::before,
+  .boton:focus-visible::before {
+    transform: translateY(0);
+  }
+  .boton:hover {
+    color: var(--color-lino);
+    box-shadow: 0 24px 48px -24px rgba(22, 27, 24, 0.6);
+  }
+  .boton--clara {
+    background: var(--color-lino);
+    color: var(--color-obsidiana);
+  }
+  .boton--clara:hover,
+  .boton--clara:focus-visible {
+    color: var(--color-lino);
+  }
+  .boton--pequena {
+    min-height: 44px;
+    padding: 0 18px 0 20px;
+    font-size: 12px;
+    gap: 16px;
+  }
+  .boton:disabled,
+  .boton[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .flecha {
+    display: inline-block;
+    transition: transform 0.7s var(--e);
+  }
+  .boton:hover .flecha,
+  .enlace:hover .flecha {
+    transform: translateX(7px);
+  }
+
+  /* Enlace (.ln): subrayado que se recoge hacia la derecha */
+  .enlace {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .enlace__texto {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+    padding-bottom: 3px;
+    transition: background-size 0.6s var(--e);
+  }
+  .enlace:hover .enlace__texto {
+    background-size: 0 1px;
+    background-position: 100% 100%;
+  }
+
+  /* Enlace de navegación (.nl): línea Huaca que crece al pasar el cursor */
+  .enlace-nav {
+    position: relative;
+    text-decoration: none;
+  }
+  .enlace-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 1px;
+    background: var(--color-huaca);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.55s var(--e);
+  }
+  .enlace-nav:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Chip: radio o casilla real con apariencia de opción táctil */
+  .chip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .chip__cara {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(238, 233, 225, 0.35);
+    font-size: 14px;
+    transition:
+      background 0.4s var(--e),
+      color 0.4s var(--e),
+      border-color 0.4s var(--e);
+  }
+  .chip:hover .chip__cara {
+    border-color: var(--color-lino);
+  }
+  .chip input:checked + .chip__cara {
+    background: var(--color-lino);
+    color: var(--color-obsidiana);
+    border-color: var(--color-lino);
+  }
+  .chip input:focus-visible + .chip__cara {
+    outline: 2px solid var(--color-huaca-claro);
+    outline-offset: 3px;
+  }
+  .chip input:disabled + .chip__cara {
+    opacity: 0.45;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+  /* Chip sobre fondo claro (pantallas móviles de reserva) */
+  .chip--claro .chip__cara {
+    justify-content: center;
+    padding: 0 14px;
+    border-color: var(--color-piedra);
+  }
+  .chip--claro:hover .chip__cara {
+    border-color: var(--color-obsidiana);
+  }
+  .chip--claro input:checked + .chip__cara {
+    background: var(--color-obsidiana);
+    color: var(--color-lino);
+    border-color: var(--color-obsidiana);
+  }
+  .chip--claro input:focus-visible + .chip__cara {
+    outline-color: var(--color-huaca);
+  }
+  .chip--claro input:disabled + .chip__cara {
+    color: var(--color-tabaco);
+  }
+
+  /* Campo: solo línea inferior; al enfocarse cambia a Huaca claro */
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .campo__etiqueta {
+    color: var(--color-garua);
+  }
+  .campo__control {
+    height: 52px;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(238, 233, 225, 0.4);
+    color: var(--color-lino);
+    font-family: var(--font-sans);
+    font-size: 18px;
+    padding: 0;
+    border-radius: 0;
+    appearance: none;
+    transition: border-color 0.4s var(--e);
+  }
+  select.campo__control {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23EEE9E1' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    padding-right: 24px;
+  }
+  .campo__control:focus,
+  .campo__control:focus-visible {
+    outline: none;
+    border-bottom-color: var(--color-huaca-claro);
+  }
+  .campo__control option {
+    color: var(--color-obsidiana);
+  }
+  .campo__control::placeholder {
+    color: rgba(238, 233, 225, 0.5);
+  }
+  .campo__control::-webkit-calendar-picker-indicator {
+    filter: invert(0.9);
+    cursor: pointer;
+  }
+  .campo__control[aria-invalid="true"] {
+    border-bottom-color: var(--color-huaca-claro);
+  }
+  .campo__error {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-huaca-claro);
+  }
+  /* Campo sobre fondo claro */
+  .campo--claro {
+    gap: 4px;
+  }
+  .campo--claro .campo__etiqueta {
+    color: var(--color-tabaco);
+  }
+  .campo--claro .campo__control {
+    height: 46px;
+    border-bottom-color: var(--color-tabaco);
+    color: var(--color-obsidiana);
+    font-size: 16px;
+  }
+  .campo--claro select.campo__control {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23161B18' stroke-width='1.2'/%3E%3C/svg%3E");
+  }
+  .campo--claro .campo__control:focus {
+    border-bottom-color: var(--color-huaca);
+  }
+  .campo--claro .campo__control::placeholder {
+    color: #8a7b6e;
+  }
+  .campo--claro .campo__control::-webkit-calendar-picker-indicator {
+    filter: none;
+  }
+  .campo--claro .campo__error {
+    color: var(--color-huaca-profundo);
+  }
+
+  /* Acordeon: details/summary nativo con el + que gira 45° */
+  .acordeon > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .acordeon > summary::-webkit-details-marker {
+    display: none;
+  }
+  .acordeon__signo {
+    display: inline-block;
+    transition: transform 0.5s var(--e);
+  }
+  .acordeon[open] .acordeon__signo {
+    transform: rotate(45deg);
+  }
+
+  /* Marco de foto (.fr): acercamiento lento al pasar el cursor */
+  .marco {
+    position: relative;
+    overflow: hidden;
+  }
+  .marco img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.8s var(--e);
+  }
+  .marco:hover img {
+    transform: scale(1.035);
+  }
+
+  /* Grano: capa fija con grano.png al 9 % en modo overlay */
+  .grano {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 80;
+    background-image: url("/img/grano.png");
+    background-size: 200px;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+  }
+}
+
+/* ── Movimiento ──────────────────────────────────────────────────── */
+@keyframes up {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes clip {
+  from {
+    clip-path: inset(18% 0 0 0);
+    transform: scale(1.08);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+}
+@keyframes line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes heroimg {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes kb {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Entrada (al cargar): .in y retrasos .d1–.d5 del lienzo */
+.entrada {
+  animation: up 1.3s var(--e) both;
+}
+.retraso-1 { animation-delay: 0.12s; }
+.retraso-2 { animation-delay: 0.28s; }
+.retraso-3 { animation-delay: 0.44s; }
+.retraso-4 { animation-delay: 0.6s; }
+.retraso-5 { animation-delay: 0.8s; }
+
+/* Foto del hero: cortina de 1.6 s y acercamiento de 2.8 s */
+.hero-cortina {
+  animation: heroimg 1.6s var(--s) 0.2s both;
+}
+.hero-cortina img {
+  animation: kb 2.8s var(--e) 0.2s both;
+}
+.inserto-cortina {
+  animation: heroimg 1.4s var(--s) 0.7s both;
+}
+.regla {
+  transform-origin: left;
+  animation: line 1.4s var(--e) 0.5s both;
+}
+
+/* Al hacer scroll: aparición (.rv) y cortina (.clip) con view() */
+@supports (animation-timeline: view()) {
+  .revelar {
+    animation: up linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 28%;
+  }
+  .cortina {
+    animation: clip linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+}
+
+/* Respaldo con IntersectionObserver (Safari y Firefox).
+   El observador añade .rv-io a <html> solo si view() no existe. */
+.rv-io .revelar {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 1.3s var(--e),
+    transform 1.3s var(--e);
+}
+.rv-io .cortina {
+  clip-path: inset(18% 0 0 0);
+  transform: scale(1.08);
+  transition:
+    clip-path 1.4s var(--e),
+    transform 1.4s var(--e);
+}
+.rv-io .revelar.visto,
+.rv-io .cortina.visto {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+/* Con movimiento reducido se apaga todo movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .rv-io .revelar,
+  .rv-io .cortina {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}

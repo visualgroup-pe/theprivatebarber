@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Reserva · 3 Lugar y datos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#EEE9E1}
+*{box-sizing:border-box}
+a{color:inherit}a:hover{color:inherit}
+.sf{font-family:'Instrument Serif',serif;font-weight:400}
+.mono{font-family:'IBM Plex Mono',monospace}
+.lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt .card{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;border:1px solid #D8D1C5;background:#EEE9E1;transition:border-color .4s,background .4s}
+.opt input:checked+.card{border-color:#161B18;background:#FFFFFF;box-shadow:inset 3px 0 0 #A0634A}
+.opt input:focus-visible+.card{outline:2px solid #A0634A;outline-offset:2px}
+.chip{position:relative;cursor:pointer;display:inline-block}
+.chip input{position:absolute;opacity:0;width:1px;height:1px}
+.chip span{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:1px solid #D8D1C5;font-size:14px;transition:all .35s}
+.chip input:checked+span{background:#161B18;color:#EEE9E1;border-color:#161B18}
+.chip input:disabled+span{color:#5A4636;opacity:.45;text-decoration:line-through;cursor:not-allowed}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld input,.fld select{height:46px;border:0;border-bottom:1px solid #5A4636;background:transparent;font-family:'Hanken Grotesk',sans-serif;font-size:16px;color:#161B18;padding:0;border-radius:0}
+.fld input::placeholder{color:#8A7B6E}
+.cta{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:56px;padding:0 22px;border:0;background:#A0634A;color:#EEE9E1;font-family:'Hanken Grotesk',sans-serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;cursor:pointer;text-decoration:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #EEE9E1; color: #161B18; font-family: 'Hanken Grotesk', sans-serif; display: flex; flex-direction: column">
+<header style="padding: 18px 20px 0">
+  <div style="display: flex; justify-content: space-between; align-items: center; height: 44px">
+    <a href="#" aria-label="Volver" style="width: 44px; height: 44px; display: inline-flex; align-items: center; margin-left: -10px; justify-content: center"><svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true"><path d="M19 7H2M7 1L1 7l6 6" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <img src="../marca/monograma-fondo-claro.svg" alt="The Private Barber" style="height: 26px; width: auto">
+    <a href="#" aria-label="Cerrar" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; margin-right: -10px"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.4"/></svg></a>
+  </div>
+  <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: baseline">
+    <span class="lbl" style="color: #8E5640">Paso 3 de 3</span>
+    <span class="mono" style="font-size: 11px; color: #5A4636">Lugar y datos</span>
+  </div>
+  <div aria-hidden="true" style="margin-top: 10px; height: 2px; background: #D8D1C5"><div style="width: 100%; height: 2px; background: #161B18"></div></div>
+  <h1 class="sf" style="margin: 26px 0 0; font-size: 42px; line-height: 0.95; letter-spacing: -0.02em">¿Dónde<br><em style="color: #A0634A">te encontramos?</em></h1>
+</header>
+<main style="padding: 20px 20px 0; display: flex; flex-direction: column; gap: 18px">
+  <fieldset style="border: 0; margin: 0; padding: 0">
+    <legend class="lbl" style="padding: 0; margin-bottom: 10px; color: #5A4636">Lugar</legend>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px">
+      <label class="chip"><input type="radio" name="lugar" checked><span style="width: 100%">Casa</span></label>
+      <label class="chip"><input type="radio" name="lugar"><span style="width: 100%">Oficina</span></label>
+      <label class="chip"><input type="radio" name="lugar"><span style="width: 100%">Hotel</span></label>
+    </div>
+  </fieldset>
+  <label class="fld"><span class="lbl" style="color: #5A4636">Distrito</span><select><option>San Isidro</option><option>Miraflores</option><option>Santiago de Surco</option><option>San Borja</option><option>La Molina</option><option>Otro distrito</option></select></label>
+  <label class="fld"><span class="lbl" style="color: #5A4636">Dirección y referencia</span><input type="text" placeholder="Calle, número, piso o depto."></label>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+    <label class="fld"><span class="lbl" style="color: #5A4636">Nombre</span><input type="text" placeholder="Tu nombre"></label>
+    <label class="fld"><span class="lbl" style="color: #5A4636">WhatsApp</span><input type="tel" placeholder="9XX XXX XXX"></label>
+  </div>
+  <label style="display: flex; gap: 12px; align-items: flex-start; font-size: 12.5px; line-height: 1.45; color: #5A4636; min-height: 44px"><input type="checkbox" checked style="margin: 2px 0 0; width: 18px; height: 18px; accent-color: #161B18; flex: none">Acepto la política de privacidad y el uso de mis datos para gestionar la cita.</label>
+</main>
+<div style="margin-top: auto; background: #161B18; color: #EEE9E1; padding: 16px 20px 26px">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px">
+    <span style="font-size: 13px; color: #C9CCC7">Jue 10 dic · Tarde · San Isidro</span>
+    <span class="mono" style="font-size: 18px">S/ 350</span>
+  </div>
+  <button type="button" class="cta">Enviar solicitud <span aria-hidden="true">→</span></button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

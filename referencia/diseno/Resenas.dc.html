@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Reseñas · The Private Barber</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#EEE9E1}
+*{box-sizing:border-box}
+a{color:inherit}a:hover{color:inherit}
+html{scroll-behavior:smooth}
+:root{--e:cubic-bezier(.16,1,.3,1);--s:cubic-bezier(.65,0,.35,1)}
+.wrap{position:relative;font-family:'Hanken Grotesk',sans-serif;color:#161B18;background:#EEE9E1;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:80;background-image:url(../img/grano.png);background-size:200px;opacity:.09;mix-blend-mode:overlay}
+.c{max-width:1440px;margin:0 auto;padding-left:clamp(20px,4vw,64px);padding-right:clamp(20px,4vw,64px)}
+.sf{font-family:'Instrument Serif',serif;font-weight:400}
+.mono{font-family:'IBM Plex Mono',monospace}
+.lbl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500}
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;height:78px}
+.nav-l,.nav-r{display:flex;gap:34px;align-items:center;font-size:13px;letter-spacing:.06em}
+.nav-r{justify-content:flex-end}
+.nl{position:relative;text-decoration:none}
+.nl::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:#A0634A;transform:scaleX(0);transform-origin:right;transition:transform .55s var(--e)}
+.nl:hover::after{transform:scaleX(1);transform-origin:left}
+.cta{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:space-between;gap:28px;min-height:58px;padding:0 26px 0 30px;background:#161B18;color:#EEE9E1;text-decoration:none;border:0;cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;transition:color .5s var(--e),box-shadow .7s var(--e)}
+.cta::before{content:"";position:absolute;inset:0;z-index:-1;background:#A0634A;transform:translateY(101%);transition:transform .7s var(--e)}
+.cta:hover::before,.cta:focus-visible::before{transform:translateY(0)}
+.cta:hover{color:#EEE9E1;box-shadow:0 24px 48px -24px rgba(22,27,24,.6)}
+.cta.lt{background:#EEE9E1;color:#161B18}
+.cta.lt:hover{color:#EEE9E1}
+.cta.sm{min-height:44px;padding:0 18px 0 20px;font-size:12px;gap:16px}
+.ar{display:inline-block;transition:transform .7s var(--e)}
+.cta:hover .ar,.ln:hover .ar{transform:translateX(7px)}
+.ln{position:relative;display:inline-flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.ln span.u{background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;padding-bottom:3px;transition:background-size .6s var(--e)}
+.ln:hover span.u{background-size:0 1px;background-position:100% 100%}
+:focus-visible{outline:2px solid #A0634A;outline-offset:4px}
+.fr{overflow:hidden;position:relative}
+.fr img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.8s var(--e)}
+.fr:hover img{transform:scale(1.035)}
+.hero-h{margin:0;font-size:clamp(78px,14vw,236px);line-height:.84;letter-spacing:-.04em}
+.hero-h .l2{display:block;padding-left:22%}
+.hero-grid{display:grid;grid-template-columns:4fr 8fr;gap:clamp(32px,5vw,88px);align-items:end}
+.hero-fig{position:relative}
+.hero-inset{position:absolute;left:-18%;bottom:-72px;width:36%;aspect-ratio:3/4;border:12px solid #EEE9E1;z-index:2}
+.duo{display:grid;grid-template-columns:7fr 5fr;gap:clamp(20px,3vw,40px);align-items:start}
+.duo .b{margin-top:clamp(60px,10vw,160px)}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(280px,29vw,430px);gap:clamp(16px,2vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;padding:0 clamp(20px,4vw,64px) 28px;scrollbar-width:thin;scrollbar-color:#5A4636 transparent}
+.rail>*{scroll-snap-align:start}
+.split{display:grid;grid-template-columns:5fr 7fr;gap:clamp(40px,6vw,110px);align-items:start}
+.mrow{display:flex;align-items:baseline;gap:16px}
+.mrow .dots{flex:1;min-width:24px;border-bottom:1px dotted rgba(90,70,54,.6);transform:translateY(-7px)}
+.mitem{padding:26px 0;border-bottom:1px solid #D8D1C5;transition:padding .6s var(--e)}
+.mitem:hover{padding-left:12px}
+.ases{display:grid;grid-template-columns:8fr 5fr;align-items:center}
+.ases-card{margin-left:-22%;position:relative;z-index:2}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative}
+.steps::before{content:"";position:absolute;left:0;right:0;top:7px;height:1px;background:#161B18;opacity:.25}
+.barb{display:grid;grid-template-columns:7fr 5fr;gap:clamp(40px,6vw,96px);align-items:end}
+.bname{margin:-0.42em 0 0;position:relative;z-index:2;font-size:clamp(96px,13vw,210px);line-height:.8;letter-spacing:-.04em}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,48px);align-items:start}
+.revs>*:nth-child(2){margin-top:110px}
+.revs>*:nth-child(3){margin-top:40px}
+.faq{display:grid;grid-template-columns:4fr 8fr;gap:clamp(40px,6vw,110px)}
+details>summary{list-style:none;cursor:pointer}
+details>summary::-webkit-details-marker{display:none}
+.pl{transition:transform .5s var(--e);display:inline-block}
+details[open] .pl{transform:rotate(45deg)}
+.book{display:grid;grid-template-columns:5fr 7fr}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{position:relative;cursor:pointer}
+.chip input{position:absolute;opacity:0;width:1px;height:1px}
+.chip span{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid rgba(238,233,225,.35);font-size:14px;transition:background .4s var(--e),color .4s var(--e),border-color .4s var(--e)}
+.chip:hover span{border-color:#EEE9E1}
+.chip input:checked+span{background:#EEE9E1;color:#161B18;border-color:#EEE9E1}
+.chip input:focus-visible+span{outline:2px solid #C98A6E;outline-offset:3px}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld input,.fld select{height:52px;background:transparent;border:0;border-bottom:1px solid rgba(238,233,225,.4);color:#EEE9E1;font-family:'Hanken Grotesk',sans-serif;font-size:18px;padding:0;border-radius:0;transition:border-color .4s var(--e)}
+.fld input:focus,.fld select:focus{outline:none;border-bottom-color:#C98A6E}
+.fld select option{color:#161B18}
+.fld input::placeholder{color:rgba(238,233,225,.5)}
+@keyframes up{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+@keyframes clip{from{clip-path:inset(18% 0 0 0);transform:scale(1.08)}to{clip-path:inset(0 0 0 0);transform:scale(1)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes heroimg{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes kb{from{transform:scale(1.12)}to{transform:scale(1)}}
+.in{animation:up 1.3s var(--e) both}
+.d1{animation-delay:.12s}.d2{animation-delay:.28s}.d3{animation-delay:.44s}.d4{animation-delay:.6s}.d5{animation-delay:.8s}
+.hero-reveal{animation:heroimg 1.6s var(--s) .2s both}
+.hero-reveal img{animation:kb 2.8s var(--e) .2s both}
+.inset-reveal{animation:heroimg 1.4s var(--s) .7s both}
+.rule{transform-origin:left;animation:line 1.4s var(--e) .5s both}
+@supports (animation-timeline: view()){
+.rv{animation:up linear both;animation-timeline:view();animation-range:entry 5% cover 28%}
+.clip{animation:clip linear both;animation-timeline:view();animation-range:entry 0% cover 42%}
+}
+@media (max-width:960px){
+.nav-l{display:none}.nav{grid-template-columns:auto 1fr}.nav-c{justify-self:start}.hm{display:none !important}
+.hero-grid,.split,.ases,.barb,.faq,.book,.duo{grid-template-columns:1fr}
+.hero-inset{display:none}.hero-h .l2{padding-left:0}
+.duo .b{margin-top:0}
+.ases-card{margin:-80px 16px 0}
+.steps{grid-template-columns:1fr 1fr;row-gap:40px}.steps::before{display:none}
+.revs{grid-template-columns:1fr}.revs>*{margin-top:0 !important}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}html{scroll-behavior:auto}}
+</style>
+</helmet>
+
+<div class="wrap">
+<div class="grain" aria-hidden="true"></div>
+
+<!-- NAV -->
+<div style="position: sticky; top: 0; z-index: 70; background: rgba(238,233,225,0.88); backdrop-filter: blur(16px) saturate(1.2); -webkit-backdrop-filter: blur(16px) saturate(1.2); border-bottom: 1px solid rgba(22,27,24,0.08)">
+  <nav aria-label="Principal" class="c nav">
+    <div class="nav-l">
+      <a href="/#servicios" class="nl">Servicios</a>
+      <a href="/#visita" class="nl">La visita</a>
+      <a href="/#barberos" class="nl">Barberos</a>
+    </div>
+    <a href="/#inicio" class="nav-c" aria-label="The Private Barber, inicio" style="display: block; line-height: 0"><img src="../marca/logo-horizontal-fondo-claro.svg" alt="The Private Barber" style="height: 28px; width: auto"></a>
+    <div class="nav-r">
+      <a href="/resenas" aria-current="page" class="nl hm">Reseñas</a>
+      <a href="/#preguntas" class="nl hm">Preguntas</a>
+      <a href="/#reserva" class="cta sm">Reservar <span class="ar" aria-hidden="true">→</span></a>
+    </div>
+  </nav>
+</div>
+
+
+<header style="padding: clamp(80px, 10vw, 160px) 0 clamp(40px, 5vw, 72px)">
+  <div class="c">
+    <div class="in" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-bottom: 22px; color: #5A4636">
+      <span class="lbl">Reseñas de clientes</span>
+      <span class="lbl">[Calificación] en Google · [N] reseñas</span>
+    </div>
+    <div class="rule" aria-hidden="true" style="height: 1px; background: #161B18; opacity: 0.85"></div>
+    <h1 class="sf hero-h in d1" style="margin-top: clamp(28px, 4vw, 56px)">Lo dicen<span class="l2"><em style="color: #A0634A">ellos.</em></span></h1>
+    <p class="in d3" style="margin: clamp(40px, 5vw, 72px) 0 0 auto; max-width: 440px; font-size: 18px; line-height: 1.6; color: #5A4636">Cada reseña viene de Google Maps y está copiada tal como la escribió el cliente: sin editar y sin elegir solo las mejores frases.</p>
+  </div>
+</header>
+
+<section aria-label="Reseñas" style="padding: 0 0 clamp(90px, 10vw, 150px)">
+  <div class="c">
+    <figure class="rv" style="margin: 0; max-width: 1000px; ; padding: clamp(56px, 7vw, 110px) 0; border-bottom: 1px solid #D8D1C5">
+      <span aria-hidden="true" class="sf" style="display: block; font-size: 160px; line-height: 0.6; color: #A0634A">“</span>
+      <blockquote style="margin: 20px 0 0"><p class="sf" style="margin: 0; font-size: clamp(44px, 5.6vw, 92px); line-height: 1; letter-spacing: -0.025em">Excelente servicio y precio. Muy recomendado.</p></blockquote>
+      <figcaption style="margin-top: 34px; font-size: 15px"><strong style="font-weight: 600">Victor P.</strong><span style="color: #5A4636"> · Local Guide, 24 opiniones · 6 fotos · Google Maps, hace 1 año</span></figcaption>
+    </figure>
+    <figure class="rv" style="margin: 0; max-width: 1000px; margin-left: auto; text-align: right; padding: clamp(56px, 7vw, 110px) 0; border-bottom: 1px solid #D8D1C5">
+      <span aria-hidden="true" class="sf" style="display: block; font-size: 160px; line-height: 0.6; color: #A0634A">“</span>
+      <blockquote style="margin: 20px 0 0"><p class="sf" style="margin: 0; font-size: clamp(44px, 5.6vw, 92px); line-height: 1; letter-spacing: -0.025em">Buena atención y servicio.</p></blockquote>
+      <figcaption style="margin-top: 34px; font-size: 15px"><strong style="font-weight: 600">Jorge S.</strong><span style="color: #5A4636"> · Local Guide, 37 opiniones · 13 fotos · Google Maps, hace 4 años</span></figcaption>
+    </figure>
+    <figure class="rv" style="margin: 0; max-width: 1000px; ; padding: clamp(56px, 7vw, 110px) 0; border-bottom: 1px solid #D8D1C5">
+      <span aria-hidden="true" class="sf" style="display: block; font-size: 160px; line-height: 0.6; color: #A0634A">“</span>
+      <blockquote style="margin: 20px 0 0"><p class="sf" style="margin: 0; font-size: clamp(44px, 5.6vw, 92px); line-height: 1; letter-spacing: -0.025em">Buena atencion...buen trabajo...recomendable</p></blockquote>
+      <figcaption style="margin-top: 34px; font-size: 15px"><strong style="font-weight: 600">Juan A.</strong><span style="color: #5A4636"> · Local Guide, 175 opiniones · 616 fotos · Google Maps, hace 7 años</span></figcaption>
+    </figure>
+    <div class="rv" style="margin-top: 56px; display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; justify-content: space-between">
+      <p style="margin: 0; font-size: 16px; color: #5A4636">¿Ya te atendimos? Tu opinión ayuda a otros a decidir.</p>
+      <a href="[enlace-perfil-google]" class="ln" style="color: #161B18"><span class="u">Escribir una reseña en Google</span> <span class="ar" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="cta-t" class="book" style="background: #161B18; color: #EEE9E1">
+  <div class="fr hm" style="min-height: 560px"><img src="../img/corte-ventana.jpg" alt="Corte con tijera junto a una ventana"></div>
+  <div style="padding: clamp(80px, 9vw, 140px) clamp(20px, 6vw, 110px); display: flex; flex-direction: column; justify-content: center; align-items: flex-start">
+    <h2 id="cta-t" class="sf rv" style="margin: 0; font-size: clamp(52px, 6vw, 100px); line-height: 0.9; letter-spacing: -0.03em">La próxima reseña<br><em style="color: #C98A6E">puede ser la tuya.</em></h2>
+    <a href="/#reserva" class="cta lt rv" style="margin-top: 48px; min-height: 64px">Reservar una cita <span class="ar" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<!-- 12 · PIE -->
+<footer id="legal" style="background: #161B18; color: #EEE9E1; border-top: 1px solid rgba(238,233,225,0.1); padding: clamp(90px, 10vw, 150px) 0 40px">
+  <div class="c">
+    <div style="text-align: center">
+      <img class="rv" src="../marca/logo-principal-fondo-oscuro.svg" alt="The Private Barber" style="width: clamp(200px, 22vw, 300px); height: auto; display: block; margin: 0 auto">
+      <p class="sf rv" style="margin: 32px 0 0; font-size: 26px"><em style="color: #C98A6E">Precisión en privado.</em></p>
+    </div>
+    <div style="margin-top: clamp(72px, 8vw, 120px); display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 40px; font-size: 15px; padding-top: 40px; border-top: 1px solid rgba(238,233,225,0.12)">
+      <nav aria-label="Servicio" style="display: flex; flex-direction: column; gap: 12px">
+        <p class="lbl" style="margin: 0 0 8px; color: #C9CCC7">Servicio</p>
+        <a href="/#servicios" class="nl" style="align-self: flex-start">La carta</a>
+        <a href="/#visita" class="nl" style="align-self: flex-start">La visita</a>
+        <a href="/#barberos" class="nl" style="align-self: flex-start">Barberos</a>
+        <a href="/resenas" class="nl" style="align-self: flex-start">Reseñas</a>
+      </nav>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <p class="lbl" style="margin: 0 0 8px; color: #C9CCC7">Contacto</p>
+        <a href="/#reserva" class="nl" style="align-self: flex-start">WhatsApp [número]</a>
+        <a href="/#reserva" class="nl" style="align-self: flex-start">Instagram @[cuenta]</a>
+        <a href="/#reserva" class="nl" style="align-self: flex-start">[correo]@[dominio]</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <p class="lbl" style="margin: 0 0 8px; color: #C9CCC7">Horario</p>
+        <span>Lunes a sábado</span>
+        <span class="mono" style="font-size: 14px">09:00–21:00</span>
+      </div>
+      <nav aria-label="Legal" style="display: flex; flex-direction: column; gap: 12px">
+        <p class="lbl" style="margin: 0 0 8px; color: #C9CCC7">Legal</p>
+        <a href="/#legal" class="nl" style="align-self: flex-start">Política de privacidad</a>
+        <a href="/#legal" class="nl" style="align-self: flex-start">Términos y condiciones</a>
+        <a href="/#legal" class="nl" style="align-self: flex-start; display: inline-flex; gap: 10px; align-items: center"><svg width="15" height="17" viewBox="0 0 16 18" fill="none" aria-hidden="true"><path d="M2 1h9l3 3v13H2z" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 10h6M5 13h4" stroke="currentColor" stroke-width="1.2"/></svg>Libro de Reclamaciones</a>
+      </nav>
+    </div>
+    <div style="margin-top: 72px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 12px; color: #C9CCC7">
+      <span>© 2026 The Private Barber · [Razón social] · RUC [pendiente]</span>
+      <span>Lima, Perú</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
