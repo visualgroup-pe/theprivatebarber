@@ -6,6 +6,7 @@ import {
   reclamacionDesdeFormData,
   type ErroresReclamacion,
 } from "@/lib/esquemas/reclamacion";
+import { crearClienteServicio, servidorConfigurado } from "@/lib/supabase/admin";
 
 export type EstadoReclamacion =
   | { estado: "inicial" }
@@ -22,9 +23,8 @@ function valoresDe(fd: FormData): Record<string, string> {
 }
 
 /**
- * Registra una hoja de reclamación. Valida con el mismo esquema que el cliente.
- * Etapa 3: el registro con número correlativo y la copia por correo se
- * conectan en las etapas 4 (Supabase) y 7 (Resend).
+ * Registra una hoja de reclamación con su número correlativo (lo asigna la
+ * base de datos). Valida con el mismo esquema que el cliente.
  */
 export async function registrarReclamacion(
   _previo: EstadoReclamacion,
@@ -35,12 +35,49 @@ export async function registrarReclamacion(
     return { estado: "errores", errores: erroresPorCampo(resultado.error), valores: valoresDe(fd) };
   }
 
-  // TODO etapa 4: insertar en `reclamaciones` con correlativo (NNNN-AAAA).
-  // TODO etapa 7: enviar la copia de la hoja al correo del consumidor.
-  return {
-    estado: "no-disponible",
-    mensaje:
-      "El registro en línea todavía no está activo. Tus datos están completos: por ahora, envíanos tu reclamo por correo o WhatsApp.",
-    valores: valoresDe(fd),
-  };
+  if (!servidorConfigurado()) {
+    return {
+      estado: "no-disponible",
+      mensaje:
+        "El registro en línea todavía no está activo. Tus datos están completos: por ahora, envíanos tu reclamo por correo o WhatsApp.",
+      valores: valoresDe(fd),
+    };
+  }
+
+  const d = resultado.data;
+  const { data, error } = await crearClienteServicio()
+    .from("reclamaciones")
+    .insert({
+      nombre: d.nombre,
+      tipo_documento: d.tipoDocumento,
+      numero_documento: d.numeroDocumento,
+      domicilio: d.domicilio,
+      telefono: d.telefono,
+      correo: d.correo,
+      menor_de_edad: d.menorDeEdad,
+      apoderado: d.menorDeEdad ? (d.apoderado ?? null) : null,
+      tipo_bien: d.tipoBien,
+      monto_reclamado: d.montoReclamado ?? null,
+      descripcion_bien: d.descripcionBien,
+      tipo: d.tipo,
+      detalle: d.detalle,
+      pedido: d.pedido,
+      // anio y numero los asigna el trigger reclamaciones_numerar
+      anio: 0,
+      numero: 0,
+    })
+    .select("correlativo")
+    .single();
+
+  if (error || !data?.correlativo) {
+    console.error("No se pudo registrar la reclamación", error);
+    return {
+      estado: "no-disponible",
+      mensaje: "No pudimos registrar tu hoja en este momento. Inténtalo de nuevo en unos minutos o escríbenos por correo.",
+      valores: valoresDe(fd),
+    };
+  }
+
+  // TODO etapa 7: enviar la copia de la hoja al correo del consumidor (Resend).
+  return { estado: "registrada", correlativo: data.correlativo, correo: d.correo };
 }
