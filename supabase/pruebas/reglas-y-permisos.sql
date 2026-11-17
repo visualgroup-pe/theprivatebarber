@@ -260,5 +260,49 @@ select pruebas.ok((select respuesta is not null from public.reclamaciones where 
 select pruebas.falla($$update public.reclamaciones set detalle = 'cambiado' where numero = 1$$, 'permission denied', 'nadie altera lo que escribió el consumidor');
 rollback;
 
+\echo '── Convocatoria de barberos'
+set role service_role;
+insert into public.postulaciones (id, nombre, tipo_documento, numero_documento, whatsapp, distrito_residencia, anos_oficio,
+  tecnicas, experiencia, fotos, dias, franjas, zonas, movilidad, herramientas_propias, compromiso_higiene,
+  compromiso_puntualidad, consentimiento_datos, cumple_requisitos)
+values ('e0000000-0000-4000-8000-0000000000e1', 'Mario Rojas', 'DNI', '44556677', '955555555', 'Surquillo', 6,
+  array['tijera', 'maquina', 'navaja'], 'Seis años en una barbería de Miraflores.', array['e0000000-0000-4000-8000-0000000000e1/1.jpg'],
+  array[1, 2, 3]::smallint[], array['tarde', 'noche'], array['Miraflores'], 'moto', true, true, true, true, true);
+select pruebas.ok((select estado = 'nueva' from public.postulaciones), 'el servidor registra una postulación «nueva»');
+select pruebas.falla($$insert into public.postulaciones (nombre, tipo_documento, numero_documento, whatsapp, distrito_residencia, anos_oficio,
+  experiencia, dias, franjas, movilidad, herramientas_propias, compromiso_higiene, compromiso_puntualidad, consentimiento_datos, cumple_requisitos)
+  values ('Sin permiso', 'DNI', '11223344', '955555556', 'Lince', 2, 'Dos años en barbería de barrio.', array[1]::smallint[], array['tarde'],
+  'auto', true, true, true, false, false)$$, 'postulaciones_consentimiento_datos_check', 'sin consentimiento no se registra');
+select pruebas.falla($$insert into public.postulaciones (nombre, tipo_documento, numero_documento, whatsapp, distrito_residencia, anos_oficio,
+  experiencia, dias, franjas, movilidad, herramientas_propias, compromiso_higiene, compromiso_puntualidad, consentimiento_datos, cumple_requisitos)
+  values ('Sin días', 'DNI', '11223344', '955555556', 'Lince', 2, 'Dos años en barbería de barrio.', array[]::smallint[], array['tarde'],
+  'auto', true, true, true, true, false)$$, 'postulaciones_dias_check', 'sin días disponibles no se registra');
+reset role;
+
+begin;
+set local role anon;
+select pruebas.falla('select * from public.postulaciones', 'permission denied', 'un visitante no ve postulaciones');
+select pruebas.falla($$insert into public.postulaciones (nombre) values ('x')$$, 'permission denied', 'ni las crea directamente');
+rollback;
+
+begin;
+set local role authenticated;
+select pruebas.como('b0000000-0000-4000-8000-00000000000b');
+select pruebas.ok((select count(*) from public.postulaciones) = 0, 'un barbero no ve postulaciones');
+update public.postulaciones set estado = 'aprobada';
+reset role;
+select pruebas.ok((select estado = 'nueva' from public.postulaciones), 'ni las cambia');
+rollback;
+
+begin;
+set local role authenticated;
+select pruebas.como('a0000000-0000-4000-8000-00000000000a');
+select pruebas.ok((select count(*) from public.postulaciones) = 1, 'admin ve las postulaciones');
+update public.postulaciones set estado = 'entrevista', notas = 'Llamar el lunes';
+select pruebas.ok((select estado = 'entrevista' and actualizado_en >= creado_en from public.postulaciones), 'admin cambia estado y notas');
+delete from public.postulaciones;
+select pruebas.ok((select count(*) from public.postulaciones) = 0, 'admin puede borrarla (derecho de cancelación)');
+rollback;
+
 \echo ''
 \echo 'Todas las pruebas pasaron.'

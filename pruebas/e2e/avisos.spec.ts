@@ -108,7 +108,7 @@ test("tarea de cada hora: recordatorio 24 h antes y alerta por falta de respuest
     expect(plantilla(l, "tpb_recordatorio")).toHaveLength(1);
   }
   const segunda = await cron();
-  expect(segunda).toEqual({ recordatorios: 0, alertas: 0 });
+  expect(segunda).toMatchObject({ recordatorios: 0, alertas: 0 });
 });
 
 test("webhook de WhatsApp: verificación de Meta, firma y estado «leído»", async ({ request }) => {

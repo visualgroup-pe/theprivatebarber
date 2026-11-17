@@ -1,4 +1,3 @@
-// Generado con: npm run db:tipos (Supabase · proyecto theprivatebarber). No editar a mano.
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -20,6 +19,7 @@ export type Database = {
           estado: string;
           id: number;
           plantilla: string;
+          postulacion_id: string | null;
           proveedor_id: string | null;
           reclamacion_id: string | null;
         };
@@ -33,6 +33,7 @@ export type Database = {
           estado: string;
           id?: never;
           plantilla: string;
+          postulacion_id?: string | null;
           proveedor_id?: string | null;
           reclamacion_id?: string | null;
         };
@@ -46,6 +47,7 @@ export type Database = {
           estado?: string;
           id?: never;
           plantilla?: string;
+          postulacion_id?: string | null;
           proveedor_id?: string | null;
           reclamacion_id?: string | null;
         };
@@ -55,6 +57,13 @@ export type Database = {
             columns: ["cita_id"];
             isOneToOne: false;
             referencedRelation: "citas";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "avisos_postulacion_id_fkey";
+            columns: ["postulacion_id"];
+            isOneToOne: false;
+            referencedRelation: "postulaciones";
             referencedColumns: ["id"];
           },
           {
@@ -372,6 +381,113 @@ export type Database = {
         };
         Relationships: [];
       };
+      postulaciones: {
+        Row: {
+          actualizado_en: string;
+          anos_oficio: number;
+          barbero_id: string | null;
+          compromiso_higiene: boolean;
+          compromiso_puntualidad: boolean;
+          consentimiento_datos: boolean;
+          correo: string | null;
+          creado_en: string;
+          cumple_requisitos: boolean;
+          dias: number[];
+          distrito_residencia: string;
+          especialidad: string | null;
+          estado: Database["public"]["Enums"]["estado_postulacion"];
+          experiencia: string;
+          experiencia_domicilio: boolean;
+          fotos: string[];
+          franjas: string[];
+          herramientas_propias: boolean;
+          id: string;
+          instagram: string | null;
+          mensaje: string | null;
+          movilidad: string;
+          nombre: string;
+          notas: string | null;
+          numero_documento: string;
+          requisitos_faltantes: string[];
+          tecnicas: string[];
+          tipo_documento: string;
+          whatsapp: string;
+          zonas: string[];
+        };
+        Insert: {
+          actualizado_en?: string;
+          anos_oficio: number;
+          barbero_id?: string | null;
+          compromiso_higiene: boolean;
+          compromiso_puntualidad: boolean;
+          consentimiento_datos: boolean;
+          correo?: string | null;
+          creado_en?: string;
+          cumple_requisitos: boolean;
+          dias: number[];
+          distrito_residencia: string;
+          especialidad?: string | null;
+          estado?: Database["public"]["Enums"]["estado_postulacion"];
+          experiencia: string;
+          experiencia_domicilio?: boolean;
+          fotos?: string[];
+          franjas: string[];
+          herramientas_propias: boolean;
+          id?: string;
+          instagram?: string | null;
+          mensaje?: string | null;
+          movilidad: string;
+          nombre: string;
+          notas?: string | null;
+          numero_documento: string;
+          requisitos_faltantes?: string[];
+          tecnicas?: string[];
+          tipo_documento: string;
+          whatsapp: string;
+          zonas?: string[];
+        };
+        Update: {
+          actualizado_en?: string;
+          anos_oficio?: number;
+          barbero_id?: string | null;
+          compromiso_higiene?: boolean;
+          compromiso_puntualidad?: boolean;
+          consentimiento_datos?: boolean;
+          correo?: string | null;
+          creado_en?: string;
+          cumple_requisitos?: boolean;
+          dias?: number[];
+          distrito_residencia?: string;
+          especialidad?: string | null;
+          estado?: Database["public"]["Enums"]["estado_postulacion"];
+          experiencia?: string;
+          experiencia_domicilio?: boolean;
+          fotos?: string[];
+          franjas?: string[];
+          herramientas_propias?: boolean;
+          id?: string;
+          instagram?: string | null;
+          mensaje?: string | null;
+          movilidad?: string;
+          nombre?: string;
+          notas?: string | null;
+          numero_documento?: string;
+          requisitos_faltantes?: string[];
+          tecnicas?: string[];
+          tipo_documento?: string;
+          whatsapp?: string;
+          zonas?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "postulaciones_barbero_id_fkey";
+            columns: ["barbero_id"];
+            isOneToOne: false;
+            referencedRelation: "barberos";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       reclamaciones: {
         Row: {
           anio: number;
@@ -664,6 +780,7 @@ export type Database = {
     Enums: {
       estado_cita:
         "solicitud_recibida" | "pendiente" | "confirmada" | "rechazada" | "reprogramacion" | "cancelada" | "completada";
+      estado_postulacion: "nueva" | "en_revision" | "entrevista" | "prueba" | "aprobada" | "descartada";
       franja: "manana" | "mediodia" | "tarde" | "noche";
       lugar_atencion: "casa" | "oficina" | "hotel";
       origen_cita: "web" | "whatsapp";
@@ -796,6 +913,7 @@ export const Constants = {
         "cancelada",
         "completada",
       ],
+      estado_postulacion: ["nueva", "en_revision", "entrevista", "prueba", "aprobada", "descartada"],
       franja: ["manana", "mediodia", "tarde", "noche"],
       lugar_atencion: ["casa", "oficina", "hotel"],
       origen_cita: ["web", "whatsapp"],

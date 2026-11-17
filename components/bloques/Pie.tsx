@@ -48,6 +48,9 @@ export function Pie({ enPortada = true }: Props) {
             <EnlaceNav href="/resenas" className="self-start">
               Reseñas
             </EnlaceNav>
+            <EnlaceNav href="/convocatoria" className="self-start">
+              Trabaja con nosotros
+            </EnlaceNav>
           </nav>
           <div className={columna}>
             <p className={titulo}>Contacto</p>

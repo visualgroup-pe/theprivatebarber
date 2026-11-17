@@ -16,6 +16,7 @@ const ENLACES = [
   { href: "/admin/servicios", texto: "Servicios y precios" },
   { href: "/admin/barberos", texto: "Barberos y horarios" },
   { href: "/admin/zonas", texto: "Zonas" },
+  { href: "/admin/postulaciones", texto: "Convocatoria" },
   { href: "/admin/reclamaciones", texto: "Reclamaciones" },
 ];
 

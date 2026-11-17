@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { avisarCita } from "@/lib/avisos";
 import { avisos } from "@/lib/avisos/config";
 import { ahoraEnLima, sumarDias } from "@/lib/disponibilidad";
+import { borrarFotosHuerfanas } from "@/lib/postulaciones";
 import { crearClienteServicio, servidorConfigurado } from "@/lib/supabase/admin";
 
 /**
@@ -9,6 +10,7 @@ import { crearClienteServicio, servidorConfigurado } from "@/lib/supabase/admin"
  * · recordatorio al cliente ~24 h antes de una cita confirmada;
  * · alerta a la administración si el barbero no respondió en N horas.
  * Las marcas en la cita evitan repetir avisos.
+ * · limpieza de fotos de postulaciones que no se llegaron a enviar.
  */
 export async function GET(request: Request) {
   const autorizacion = request.headers.get("authorization");
@@ -50,5 +52,10 @@ export async function GET(request: Request) {
   for (const c of porRecordar) await avisarCita(c.id, "recordatorio");
   for (const c of sinRespuesta ?? []) await avisarCita(c.id, "alerta_admin");
 
-  return NextResponse.json({ recordatorios: porRecordar.length, alertas: sinRespuesta?.length ?? 0 });
+  const fotosHuerfanas = await borrarFotosHuerfanas().catch((e) => {
+    console.error("No se pudieron borrar fotos huérfanas:", e);
+    return 0;
+  });
+
+  return NextResponse.json({ recordatorios: porRecordar.length, alertas: sinRespuesta?.length ?? 0, fotosHuerfanas });
 }

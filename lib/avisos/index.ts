@@ -1,5 +1,6 @@
 import "server-only";
 import type { FranjaId } from "@/content/zonas";
+import { nombreRequisito } from "@/lib/convocatoria";
 import { LUGARES } from "@/lib/estados";
 import { empresa } from "@/lib/empresa";
 import { crearClienteServicio, servidorConfigurado } from "@/lib/supabase/admin";
@@ -9,10 +10,13 @@ import {
   alertaAdmin,
   avisoBarbero,
   avisoCliente,
+  avisoPostulacionAdmin,
   avisoReclamacionAdmin,
   copiaReclamacion,
+  postulacionRecibida,
   respuestaReclamacion,
   type DatosCita,
+  type DatosPostulacion,
   type DatosReclamacion,
   type EventoCliente,
 } from "./plantillas";
@@ -82,13 +86,13 @@ async function porWhatsapp(citaId: string, para: string | null | undefined, plan
 }
 
 async function porCorreo(
-  ref: { citaId?: string; reclamacionId?: string },
+  ref: { citaId?: string; reclamacionId?: string; postulacionId?: string },
   para: string | null | undefined,
   plantilla: string,
   correo: { asunto: string; html: string; texto: string },
 ): Promise<Resultado | null> {
   if (!para) return null;
-  const clave = `${ref.citaId ?? ref.reclamacionId}-${plantilla}`;
+  const clave = `${ref.citaId ?? ref.reclamacionId ?? ref.postulacionId}-${plantilla}`;
   const r = await enviarCorreo(para, correo.asunto, correo.html, correo.texto, clave);
   await registrar({ ...ref, canal: "correo", destinatario: para, plantilla }, r);
   return r;
@@ -175,5 +179,35 @@ export async function avisarReclamacion(id: string, evento: "registrada" | "resp
     }
   } catch (e) {
     console.error(`avisarReclamacion(${id}, ${evento}) falló:`, e);
+  }
+}
+
+/** Convocatoria: aviso a la administración y acuse al postulante (si dejó correo). */
+export async function avisarPostulacion(id: string): Promise<void> {
+  try {
+    if (!servidorConfigurado()) return;
+    const { data: p } = await crearClienteServicio()
+      .from("postulaciones")
+      .select("id, nombre, whatsapp, correo, anos_oficio, zonas, cumple_requisitos, requisitos_faltantes")
+      .eq("id", id)
+      .maybeSingle();
+    if (!p) return;
+    const datos: DatosPostulacion = {
+      id: p.id,
+      nombre: p.nombre,
+      whatsapp: p.whatsapp,
+      correo: p.correo,
+      anosOficio: p.anos_oficio,
+      zonas: p.zonas,
+      cumple: p.cumple_requisitos,
+      faltan: p.requisitos_faltantes.map(nombreRequisito),
+    };
+    const ref = { postulacionId: id };
+    await Promise.all([
+      porCorreo(ref, avisos.admin.correo, "postulacion_admin", avisoPostulacionAdmin(datos, avisos.sitioUrl)),
+      porCorreo(ref, p.correo, "postulacion_recibida", postulacionRecibida(datos, avisos.sitioUrl)),
+    ]);
+  } catch (e) {
+    console.error(`avisarPostulacion(${id}) falló:`, e);
   }
 }

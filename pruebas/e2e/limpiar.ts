@@ -46,6 +46,18 @@ export default async function limpiar() {
     }
   }
 
+  // Postulaciones de prueba, sus fotos y las fichas de barbero creadas desde ellas.
+  const { data: postulaciones } = await s.from("postulaciones").select("id").like("nombre", `${PREFIJO}%`);
+  for (const { id } of postulaciones ?? []) {
+    const { data: archivos } = await s.storage.from("postulaciones").list(id);
+    if (archivos?.length) await s.storage.from("postulaciones").remove(archivos.map((a) => `${id}/${a.name}`));
+  }
+  if (postulaciones?.length) {
+    await s.from("avisos").delete().in("postulacion_id", postulaciones.map((p) => p.id));
+    await s.from("postulaciones").delete().in("id", postulaciones.map((p) => p.id));
+  }
+  await s.from("barberos").delete().like("nombre", `${PREFIJO}%`).neq("slug", BARBERO_PRUEBA);
+
   // Servicios temporales, barbero y cuentas de prueba.
   await s.from("servicios").delete().like("nombre", `${PREFIJO}%`);
   if (barbero) await s.from("barberos").delete().eq("id", barbero.id);

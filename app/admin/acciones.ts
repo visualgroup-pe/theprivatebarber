@@ -8,6 +8,7 @@ import type { ResultadoAccion } from "@/lib/acciones/citas";
 import { obtenerUsuario } from "@/lib/auth";
 import { avisarCita, avisarReclamacion } from "@/lib/avisos";
 import { ETIQUETA_CATALOGO } from "@/lib/catalogo";
+import { BUCKET_POSTULACIONES } from "@/lib/convocatoria";
 import { mensajeDeError } from "@/lib/estados";
 import { erroresPorCampo, esquemaSolicitud, normalizarWhatsapp, OTRO_DISTRITO_ID } from "@/lib/esquemas/solicitud";
 import { crearClienteServicio } from "@/lib/supabase/admin";
@@ -287,4 +288,91 @@ export async function registrarSolicitud(_p: ResultadoAccion, fd: FormData): Pro
   after(() => avisarCita(cita.id, "solicitud_recibida"));
   revalidatePath("/admin", "layout");
   redirect(`/admin/citas/${cita.id}`);
+}
+
+// ── Convocatoria ──────────────────────────────────────────────────
+
+const ESTADOS_POSTULACION_IDS = ["nueva", "en_revision", "entrevista", "prueba", "aprobada", "descartada"] as const;
+
+export async function actualizarPostulacion(_p: ResultadoAccion, fd: FormData): Promise<ResultadoAccion> {
+  const s = await sesionAdmin();
+  if (!s) return SIN_PERMISO;
+  const estado = z.enum(ESTADOS_POSTULACION_IDS).safeParse(texto(fd, "estado"));
+  if (!estado.success) return { ok: false, mensaje: "Elige un estado." };
+  const id = texto(fd, "id");
+  const { error } = await s.supabase
+    .from("postulaciones")
+    .update({ estado: estado.data, notas: texto(fd, "notas") || null })
+    .eq("id", id);
+  const fallo = errorDb(error);
+  if (fallo) return fallo;
+  revalidatePath("/admin/postulaciones");
+  revalidatePath(`/admin/postulaciones/${id}`);
+  return { ok: true, mensaje: "Guardado." };
+}
+
+/**
+ * Crea la ficha del barbero con los datos de una postulación aprobada. Queda
+ * inactiva (sin recibir solicitudes) hasta completar foto y horario.
+ */
+export async function crearBarberoDesdePostulacion(_p: ResultadoAccion, fd: FormData): Promise<ResultadoAccion> {
+  const s = await sesionAdmin();
+  if (!s) return SIN_PERMISO;
+  const id = texto(fd, "id");
+  const { data: p } = await s.supabase
+    .from("postulaciones")
+    .select("nombre, anos_oficio, especialidad, whatsapp, estado, barbero_id")
+    .eq("id", id)
+    .maybeSingle();
+  if (!p) return { ok: false, mensaje: "No encontramos la postulación." };
+  if (p.estado !== "aprobada")
+    return {
+      ok: false,
+      mensaje: "Primero marca la postulación como aprobada.",
+    };
+  if (p.barbero_id) return { ok: false, mensaje: "Ya tiene ficha de barbero." };
+
+  const base = slugDe(p.nombre) || "barbero";
+  const { data: usados } = await s.supabase.from("barberos").select("slug").like("slug", `${base}%`);
+  const ocupados = new Set((usados ?? []).map((b) => b.slug));
+  let slug = base;
+  for (let n = 2; ocupados.has(slug); n++) slug = `${base}-${n}`;
+
+  const { data: barbero, error } = await s.supabase
+    .from("barberos")
+    .insert({
+      nombre: p.nombre,
+      slug,
+      anos_oficio: p.anos_oficio,
+      especialidad: p.especialidad,
+      whatsapp: p.whatsapp,
+      activo: false,
+      orden: 50,
+    })
+    .select("id")
+    .single();
+  const fallo = errorDb(error, "No se pudo crear la ficha.");
+  if (fallo || !barbero) return fallo ?? { ok: false, mensaje: "No se pudo crear la ficha." };
+  await s.supabase.from("postulaciones").update({ barbero_id: barbero.id }).eq("id", id);
+  refrescarCatalogo("/admin/barberos", `/admin/postulaciones/${id}`);
+  return {
+    ok: true,
+    mensaje: "Ficha creada, sin recibir solicitudes. Complétala en Barberos y horarios: foto y horario.",
+  };
+}
+
+/** Borra la postulación y sus fotos (derecho de cancelación, Ley 29733). */
+export async function borrarPostulacion(_p: ResultadoAccion, fd: FormData): Promise<ResultadoAccion> {
+  const s = await sesionAdmin();
+  if (!s) return SIN_PERMISO;
+  if (texto(fd, "confirmar") !== "BORRAR") return { ok: false, mensaje: "Escribe BORRAR para confirmar." };
+  const id = texto(fd, "id");
+  const almacen = s.supabase.storage.from(BUCKET_POSTULACIONES);
+  const { data: archivos } = await almacen.list(id, { limit: 100 });
+  if (archivos?.length) await almacen.remove(archivos.map((a) => `${id}/${a.name}`));
+  const { error } = await s.supabase.from("postulaciones").delete().eq("id", id);
+  const fallo = errorDb(error, "No se pudo borrar.");
+  if (fallo) return fallo;
+  revalidatePath("/admin/postulaciones");
+  redirect("/admin/postulaciones");
 }

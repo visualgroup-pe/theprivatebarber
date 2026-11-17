@@ -1,6 +1,7 @@
 import { ListaCitas, Seccion } from "@/components/panel/Citas";
 import { TituloPanel } from "@/components/panel/MarcoPanel";
 import { Boton } from "@/components/ui/Boton";
+import Link from "next/link";
 import { exigirRol } from "@/lib/auth";
 import { listarCitas } from "@/lib/citas";
 import { ahoraEnLima, sumarDias } from "@/lib/disponibilidad";
@@ -11,14 +12,20 @@ export default async function PaginaAdmin() {
   await exigirRol("admin");
   const hoy = ahoraEnLima().fecha;
   const supabase = await crearClienteServidor();
-  const [porResponder, esperando, agenda, reclamos] = await Promise.all([
+  const [porResponder, esperando, agenda, reclamos, postulaciones] = await Promise.all([
     listarCitas({ estados: ["solicitud_recibida", "pendiente"] }),
     listarCitas({ estados: ["reprogramacion"] }),
     listarCitas({ estados: ["confirmada"], desde: hoy, hasta: sumarDias(hoy, 7) }),
     supabase.from("reclamaciones").select("id", { count: "exact", head: true }).is("respondido_en", null),
+    supabase
+      .from("postulaciones")
+      .select("id", { count: "exact", head: true })
+      .eq("estado", "nueva")
+      .eq("cumple_requisitos", true),
   ]);
   const revisarZona = porResponder.filter((c) => c.revision_zona);
   const sinResponder = reclamos.count ?? 0;
+  const postulantes = postulaciones.count ?? 0;
 
   return (
     <>
@@ -40,6 +47,16 @@ export default async function PaginaAdmin() {
           <a href="/admin/reclamaciones" className="underline underline-offset-4">
             Ver reclamaciones
           </a>
+        </p>
+      )}
+
+      {postulantes > 0 && (
+        <p className="mb-10 border border-obsidiana p-4 text-[15px] text-obsidiana">
+          {postulantes === 1 ? "Hay 1 postulación nueva" : `Hay ${postulantes} postulaciones nuevas`} de barberos que cumplen
+          los requisitos.{" "}
+          <Link href="/admin/postulaciones" className="underline underline-offset-4">
+            Ver convocatoria
+          </Link>
         </p>
       )}
 

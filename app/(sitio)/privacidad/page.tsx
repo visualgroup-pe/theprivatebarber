@@ -54,6 +54,10 @@ const secciones: SeccionLegal[] = [
             (nombre, documento de identidad, domicilio, teléfono, correo y el detalle de lo ocurrido).
           </li>
           <li>
+            <strong>Al postular como barbero:</strong> los datos del formulario de la convocatoria (nombre, documento de
+            identidad, WhatsApp, correo si nos lo das, distrito, experiencia, disponibilidad y las fotos de tus trabajos).
+          </li>
+          <li>
             <strong>Al navegar la web:</strong> datos técnicos y de uso agregados, como se explica en el apartado de
             cookies.
           </li>
@@ -75,6 +79,11 @@ const secciones: SeccionLegal[] = [
             propuesto, cita rechazada y recordatorio 24 horas antes.
           </li>
           <li>Atender tus reclamos, quejas y el ejercicio de tus derechos.</li>
+          <li id="postulantes">
+            Si postulas como barbero: evaluar tu postulación, contactarte para la entrevista y la prueba de oficio y, si te
+            unes al equipo, crear tu ficha. Solo la ve la administración, y las fotos se guardan en un almacenamiento
+            privado.
+          </li>
           <li>Cumplir obligaciones legales, tributarias y contables.</li>
         </ul>
         <p>
@@ -138,7 +147,8 @@ const secciones: SeccionLegal[] = [
     contenido: (
       <p>
         Conservamos los datos de tus citas mientras seas cliente y durante [plazo de conservación] después de tu última
-        cita. Los reclamos se conservan el tiempo que exige la normativa del Libro de Reclamaciones, y la información
+        cita. Las postulaciones de barberos que no prosperan se conservan durante [plazo de conservación de
+        postulaciones] y luego se borran con sus fotos; puedes pedir que las borremos antes. Los reclamos se conservan el tiempo que exige la normativa del Libro de Reclamaciones, y la información
         tributaria, el que exigen las normas tributarias. Después los eliminamos o los anonimizamos.
       </p>
     ),

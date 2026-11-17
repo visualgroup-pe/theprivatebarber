@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/", 1, "weekly"],
     ["/reserva", 0.9, "weekly"],
     ["/resenas", 0.7, "monthly"],
+    ["/convocatoria", 0.5, "monthly"],
     ["/terminos", 0.3, "yearly"],
     ["/privacidad", 0.3, "yearly"],
     ["/libro-de-reclamaciones", 0.3, "yearly"],

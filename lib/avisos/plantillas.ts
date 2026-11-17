@@ -309,3 +309,52 @@ export function respuestaReclamacion(r: DatosReclamacion, sitioUrl: string): Cor
     ],
   });
 }
+
+// ── Convocatoria de barberos ──────────────────────────────────────
+
+export type DatosPostulacion = {
+  id: string;
+  nombre: string;
+  whatsapp: string;
+  correo: string | null;
+  anosOficio: number;
+  zonas: string[];
+  cumple: boolean;
+  faltan: string[];
+};
+
+export function avisoPostulacionAdmin(p: DatosPostulacion, sitioUrl: string): Correo {
+  const veredicto = p.cumple ? "Cumple los requisitos" : `Le falta: ${p.faltan.join(", ")}`;
+  return correoDeMarca(`Nueva postulación: ${p.nombre}${p.cumple ? " (cumple los requisitos)" : ""}`, {
+    sitioUrl,
+    preencabezado: `${p.nombre}, ${p.anosOficio} años de oficio. ${veredicto}.`,
+    etiqueta: "Convocatoria",
+    titulo: "Nueva postulación",
+    tituloAcento: p.nombre,
+    parrafos: [p.cumple ? "Según sus respuestas, cumple todos los requisitos publicados." : `${veredicto}.`],
+    filas: [
+      ["Años de oficio", String(p.anosOficio)],
+      ["WhatsApp", p.whatsapp],
+      ["Distritos", p.zonas.join(", ") || "—"],
+    ],
+    boton: {
+      texto: "Ver la postulación",
+      url: `${sitioUrl}/admin/postulaciones/${p.id}`,
+    },
+  });
+}
+
+export function postulacionRecibida(p: DatosPostulacion, sitioUrl: string): Correo {
+  const nombre = p.nombre.split(/\s+/)[0];
+  return correoDeMarca("Recibimos tu postulación", {
+    sitioUrl,
+    preencabezado: "Revisaremos tu perfil y tus trabajos.",
+    etiqueta: "Convocatoria",
+    titulo: "Gracias,",
+    tituloAcento: `${nombre}.`,
+    parrafos: [
+      "Recibimos tu postulación para atender con The Private Barber.",
+      "Revisaremos tu perfil y tus trabajos. Si encaja con lo que buscamos, te escribiremos por WhatsApp para conversar.",
+    ],
+  });
+}

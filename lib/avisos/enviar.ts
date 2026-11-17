@@ -64,7 +64,7 @@ export async function enviarCorreo(para: string, asunto: string, html: string, t
 
 /** Deja constancia del aviso en la tabla avisos (solo la administración la lee). */
 export async function registrar(
-  datos: { citaId?: string; reclamacionId?: string; canal: "whatsapp" | "correo"; destinatario: string; plantilla: string },
+  datos: { citaId?: string; reclamacionId?: string; postulacionId?: string; canal: "whatsapp" | "correo"; destinatario: string; plantilla: string },
   r: Resultado,
 ) {
   if (r.estado === "fallido") console.error(`Aviso ${datos.plantilla} por ${datos.canal} falló:`, r.error);
@@ -74,6 +74,7 @@ export async function registrar(
     .insert({
       cita_id: datos.citaId ?? null,
       reclamacion_id: datos.reclamacionId ?? null,
+      postulacion_id: datos.postulacionId ?? null,
       canal: datos.canal,
       destinatario: datos.destinatario,
       plantilla: datos.plantilla,
