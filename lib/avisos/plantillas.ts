@@ -20,7 +20,7 @@ export const PLANTILLAS_WHATSAPP = {
     para: "Cliente",
     cuerpo:
       "Hola {{1}}, tu cita está confirmada: {{2}}, {{3}} a las {{4}}, en {{5}}. Te atiende {{6}}. Total: {{7}}, IGV incluido. Puedes reprogramar o cancelar sin costo hasta 2 horas antes, respondiendo a este mensaje.",
-    ejemplo: ["Andrés", "Corte y barba + asesoría", "jueves 10 de diciembre", "15:30", "San Isidro", "Nilber", "S/ 350"],
+    ejemplo: ["Andrés", "Corte y barba + asesoría", "jueves 10 de diciembre", "15:30", "San Isidro", "Nilber", "S/ 250"],
   },
   tpb_nuevo_horario: {
     para: "Cliente",

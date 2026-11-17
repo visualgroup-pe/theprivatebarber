@@ -2,18 +2,19 @@
 -- Textos copiados del lienzo. Se puede volver a ejecutar sin duplicar.
 
 -- ── Servicios ─────────────────────────────────────────────────────
+-- «Barba y perfilado» ya no se ofrece sola: queda inactiva (no se borra por las citas antiguas).
 insert into public.servicios
-  (slug, nombre, descripcion, descripcion_corta, duracion_texto, precio_pen, duracion_min, duracion_max, es_adicional, orden)
+  (slug, nombre, descripcion, descripcion_corta, duracion_texto, precio_pen, duracion_min, duracion_max, es_adicional, orden, activo)
 values
   ('corte-a-medida', 'Corte a medida', 'Conversación previa, corte, lavado y peinado.',
-   'Conversación, corte, lavado y peinado', '45 min – 1 h', 200, 45, 60, false, 1),
+   'Conversación, corte, lavado y peinado', '45 min – 1 h', 150, 45, 60, false, 1, true),
   ('barba-y-perfilado', 'Barba y perfilado', 'Diseño de la línea, toalla caliente y navaja.',
-   'Línea, toalla caliente y navaja', '45 min – 1 h', 100, 45, 60, false, 2),
+   'Línea, toalla caliente y navaja', '45 min – 1 h', 100, 45, 60, false, 2, false),
   ('corte-y-barba', 'Corte y barba', 'El servicio completo, pensado como un conjunto.',
-   'El servicio completo', '45 min – 1 h', 300, 45, 60, false, 3),
+   'El servicio completo', '45 min – 1 h', 200, 45, 60, false, 3, true),
   ('asesoria-de-imagen', 'Asesoría de imagen',
    'Un plan personal de imagen que el barbero te propone y explica durante la atención.',
-   'Un plan personal que el barbero te propone durante la atención', 'Se suma a tu cita', 50, null, null, true, 4)
+   'Un plan personal que el barbero te propone durante la atención', 'Se suma a tu cita', 50, null, null, true, 4, true)
 on conflict (slug) do update set
   nombre = excluded.nombre,
   descripcion = excluded.descripcion,
@@ -23,7 +24,8 @@ on conflict (slug) do update set
   duracion_min = excluded.duracion_min,
   duracion_max = excluded.duracion_max,
   es_adicional = excluded.es_adicional,
-  orden = excluded.orden;
+  orden = excluded.orden,
+  activo = excluded.activo;
 
 -- ── Zonas ─────────────────────────────────────────────────────────
 insert into public.zonas (distrito, orden) values

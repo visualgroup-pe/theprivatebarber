@@ -46,7 +46,7 @@ test.describe("API /api/solicitudes", () => {
     expect(r.status()).toBe(201);
     const { resumen } = await r.json();
     const { data: cita } = await servicio().from("citas").select("*").eq("id", resumen.id).single();
-    expect(cita).toMatchObject({ estado: "solicitud_recibida", hora_confirmada: null, precio_total_pen: 350, con_asesoria: true });
+    expect(cita).toMatchObject({ estado: "solicitud_recibida", hora_confirmada: null, precio_total_pen: 250, con_asesoria: true });
     const { data: eventos } = await servicio().from("cita_eventos").select("estado_nuevo, actor").eq("cita_id", resumen.id);
     expect(eventos).toEqual([{ estado_nuevo: "solicitud_recibida", actor: "cliente" }]);
   });
@@ -72,7 +72,7 @@ test.describe("Móvil: /reserva en tres pasos", () => {
     await expect(page.getByText("Elige un servicio.")).toBeVisible();
     await page.locator("label.opcion", { hasText: "Corte y barba" }).click();
     await page.locator("label.opcion", { hasText: "Añadir asesoría" }).click();
-    await expect(page.locator("form > div.sticky")).toContainText("S/ 350");
+    await expect(page.locator("form > div.sticky")).toContainText("S/ 250");
     await page.getByRole("button", { name: /Elegir día y hora/ }).click();
 
     await page.locator("label.opcion", { hasText: "Nilber" }).click();
@@ -94,7 +94,7 @@ test.describe("Móvil: /reserva en tres pasos", () => {
 
     await page.waitForURL("**/reserva/confirmacion");
     await expect(page.locator("body")).toContainText("Ya la tiene Nilber.");
-    await expect(page.locator("body")).toContainText("S/ 350");
+    await expect(page.locator("body")).toContainText("S/ 250");
     await expect(page.locator("body")).toContainText("aún no está confirmada");
   });
 });
@@ -103,7 +103,7 @@ test.describe("Escritorio: formulario de la portada", () => {
   test("muestra el total antes de enviar y envía la solicitud", async ({ page }) => {
     await page.goto("/#reserva");
     const f = page.locator('form[aria-label="Solicitud de cita"]');
-    await f.locator("label.chip", { hasText: "Barba y perfilado" }).click();
+    await f.locator("label.chip", { hasText: "Corte a medida" }).click();
     await f.locator("label.chip", { hasText: "Nilber" }).click();
     await f.locator('select[name="zonaId"]').selectOption({ label: "Miraflores" });
     await f.locator('input[name="fecha"]').fill(proximo(4));
@@ -112,7 +112,7 @@ test.describe("Escritorio: formulario de la portada", () => {
     await f.locator('input[name="nombre"]').fill(`${PREFIJO} Escritorio`);
     await f.locator('input[name="whatsapp"]').fill("900000104");
     await f.locator('input[name="consentimientoDatos"]').check();
-    await expect(f).toContainText("S/ 100");
+    await expect(f).toContainText("S/ 150");
     await f.getByRole("button", { name: /Enviar solicitud/ }).click();
     await page.waitForURL("**/reserva/confirmacion");
     await expect(page.locator("body")).toContainText("Miraflores");

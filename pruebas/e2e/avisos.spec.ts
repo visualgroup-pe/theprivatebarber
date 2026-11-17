@@ -59,7 +59,7 @@ test("al aceptar el barbero, el cliente recibe la confirmación con la hora", as
   await aceptar.locator('select[name="hora"]').selectOption("16:00");
   await aceptar.locator('button[type="submit"]').click();
   const l = await esperarAvisos((l) => plantilla(l, "tpb_cita_confirmada").length > 0 && correos(l, "Tu cita está confirmada").length > 0);
-  expect(parametros(plantilla(l, "tpb_cita_confirmada")[0])).toEqual(expect.arrayContaining(["16:00", "S/ 350"]));
+  expect(parametros(plantilla(l, "tpb_cita_confirmada")[0])).toEqual(expect.arrayContaining(["16:00", "S/ 250"]));
 });
 
 test("la tarea de cada hora exige su secreto", async ({ request }) => {

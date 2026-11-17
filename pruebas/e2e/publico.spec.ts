@@ -65,7 +65,8 @@ test("el pie enlaza privacidad, términos y el Libro de Reclamaciones", async ({
 test("la carta muestra precios en soles y la asesoría a S/ 50", async ({ page }) => {
   await page.goto("/");
   const carta = page.locator("#servicios");
-  for (const precio of ["S/ 200", "S/ 100", "S/ 300", "S/ 50"]) await expect(carta).toContainText(precio);
+  for (const precio of ["S/ 150", "S/ 200", "S/ 50"]) await expect(carta).toContainText(precio);
+  await expect(carta).not.toContainText("Barba y perfilado");
 });
 
 test("con movimiento reducido no hay animaciones", async ({ browser }) => {

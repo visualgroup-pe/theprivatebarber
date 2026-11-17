@@ -64,7 +64,7 @@ export default function PaginaComponentes() {
             Hanken Grotesk 400. Corte, barba y asesoría de imagen en tu casa, tu oficina o tu hotel.
           </p>
           <p className="m-0 text-[15px] font-medium">Hanken Grotesk 500 · <span className="font-semibold">600</span></p>
-          <p className="font-mono m-0 text-[17px]">S/ 200 · 45 min – 1 h · 09:00–21:00</p>
+          <p className="font-mono m-0 text-[17px]">S/ 150 · 45 min – 1 h · 09:00–21:00</p>
         </div>
 
         <h2 className="etiqueta mt-20 mb-6 text-tabaco">Marca</h2>
@@ -123,7 +123,6 @@ export default function PaginaComponentes() {
                 <Chip name="servicio" defaultChecked>
                   Corte a medida
                 </Chip>
-                <Chip name="servicio">Barba y perfilado</Chip>
                 <Chip name="servicio">Corte y barba</Chip>
               </div>
               <div className="mt-3.5 flex flex-wrap gap-2.5">

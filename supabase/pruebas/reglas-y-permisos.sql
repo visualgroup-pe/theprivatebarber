@@ -88,7 +88,7 @@ update public.barberos set user_id = 'c0000000-0000-4000-8000-00000000000c', wha
 \echo '── Visitante (anon)'
 begin;
 set local role anon;
-select pruebas.ok((select count(*) from public.servicios) = 4, 'anon lee la carta');
+select pruebas.ok((select count(*) from public.servicios) = 3, 'anon lee la carta activa (sin barba sola)');
 select pruebas.ok((select count(*) from public.zonas) = 5, 'anon lee las zonas');
 select pruebas.ok((select count(*) from public.horarios) = 7, 'anon lee los horarios');
 select pruebas.ok((select count(*) from (select id, nombre, foto_url from public.barberos) b) = 2, 'anon lee nombre y foto de los barberos');
@@ -112,8 +112,8 @@ select pruebas.sin_usuario();
 select (public.crear_solicitud('Andrés Quispe', '987654321', 'andres@ejemplo.pe', true, false,
   :'nilber', :'corte_barba', true, :'san_isidro', null, 'casa', 'Av. Ejemplo 123', 'Piso 4', :'jueves', 'tarde')).id as cita1 \gset
 select pruebas.ok((select estado = 'solicitud_recibida' from public.citas where id = :'cita1'), 'la solicitud nace como «solicitud recibida»');
-select pruebas.ok((select precio_servicio_pen = 300 and precio_asesoria_pen = 50 and precio_total_pen = 350 from public.citas where id = :'cita1'),
-  'corte y barba + asesoría = S/ 350, copiado de la carta');
+select pruebas.ok((select precio_servicio_pen = 200 and precio_asesoria_pen = 50 and precio_total_pen = 250 from public.citas where id = :'cita1'),
+  'corte y barba + asesoría = S/ 250, copiado de la carta');
 select pruebas.ok((select hora_confirmada is null from public.citas where id = :'cita1'), 'sin hora hasta que el barbero acepte');
 select pruebas.ok((select count(*) = 1 and bool_and(actor = 'cliente' and estado_anterior is null) from public.cita_eventos where cita_id = :'cita1'),
   'historial: 1 evento del cliente');
@@ -124,7 +124,11 @@ select (public.crear_solicitud('Andrés Q.', '987654321', null, true, true,
 select pruebas.ok((select count(*) from public.clientes where whatsapp = '987654321') = 1, 'mismo WhatsApp = mismo cliente');
 select pruebas.ok((select correo = 'andres@ejemplo.pe' and consentimiento_marketing from public.clientes where whatsapp = '987654321'),
   'conserva el correo y actualiza el consentimiento de marketing');
-select pruebas.ok((select precio_total_pen = 200 from public.citas where id = :'cita2'), 'corte a medida sin asesoría = S/ 200');
+select pruebas.ok((select precio_total_pen = 150 from public.citas where id = :'cita2'), 'corte a medida sin asesoría = S/ 150');
+select id as barba from public.servicios where slug = 'barba-y-perfilado' \gset
+select pruebas.falla(format($$select public.crear_solicitud('Andrés Q.', '987654321', null, true, false,
+  %L, %L, false, %L, null, 'casa', null, null, %L, 'manana')$$, :'nilber', :'barba', :'san_isidro', :'jueves'),
+  'servicio_no_disponible', 'barba sola ya no se ofrece: no se puede pedir');
 
 -- «Otro distrito» queda pendiente de revisión de zona.
 select (public.crear_solicitud('Lucía Ramos', '976543210', null, true, false,
@@ -149,9 +153,9 @@ select pruebas.falla(format($$select public.crear_solicitud('Xavier', '12345', n
 select pruebas.ok((select count(*) from public.clientes where whatsapp = '955555555') = 0, 'una solicitud rechazada no deja cliente suelto');
 
 -- Cambiar la carta no altera las citas ya creadas.
-update public.servicios set precio_pen = 320 where slug = 'corte-y-barba';
-select pruebas.ok((select precio_total_pen = 350 from public.citas where id = :'cita1'), 'subir el precio no cambia una cita existente');
-update public.servicios set precio_pen = 300 where slug = 'corte-y-barba';
+update public.servicios set precio_pen = 220 where slug = 'corte-y-barba';
+select pruebas.ok((select precio_total_pen = 250 from public.citas where id = :'cita1'), 'subir el precio no cambia una cita existente');
+update public.servicios set precio_pen = 200 where slug = 'corte-y-barba';
 reset role;
 
 \echo '── Barbero: Nilber'
@@ -221,7 +225,7 @@ select pruebas.ok((select actor = 'admin' and actor_id = 'a0000000-0000-4000-800
   'el historial la atribuye al admin');
 update public.servicios set precio_pen = 220 where slug = 'corte-a-medida';
 select pruebas.ok((select precio_pen = 220 from public.servicios where slug = 'corte-a-medida'), 'cambia precios de la carta');
-select pruebas.ok((select precio_total_pen = 200 from public.citas where id = :'cita4'), 'la cita ya creada mantiene su precio');
+select pruebas.ok((select precio_total_pen = 150 from public.citas where id = :'cita4'), 'la cita ya creada mantiene su precio');
 rollback;
 
 \echo '── Historial completo de una cita'

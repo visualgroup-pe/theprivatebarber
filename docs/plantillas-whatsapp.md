@@ -37,7 +37,7 @@ Mientras una plantilla no esté aprobada, el envío falla y queda registrado com
 | {{4}} | 15:30 |
 | {{5}} | San Isidro |
 | {{6}} | Nilber |
-| {{7}} | S/ 350 |
+| {{7}} | S/ 250 |
 
 ## `tpb_nuevo_horario`
 
