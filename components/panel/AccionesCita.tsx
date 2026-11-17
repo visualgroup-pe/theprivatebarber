@@ -5,6 +5,7 @@ import { Boton } from "@/components/ui/Boton";
 import { CampoSeleccion, CampoTexto, Campo } from "@/components/ui/Campo";
 import { franjas, type FranjaId } from "@/content/zonas";
 import { cambiarEstado, marcarEnRevision, type ResultadoAccion } from "@/lib/acciones/citas";
+import { horaMasTemprana } from "@/lib/disponibilidad";
 import { horasDeFranja, type EstadoCita } from "@/lib/estados";
 import { useAhoraLima } from "@/lib/useAhoraLima";
 
@@ -66,14 +67,16 @@ function Accion({
   );
 }
 
-function SelectorHora({ franja, nombre = "hora" }: { franja: FranjaId; nombre?: string }) {
+/** `desde`: minutos desde las 0:00 (hoy, la visita debe quedar a una hora o más). */
+function SelectorHora({ franja, nombre = "hora", desde = 0 }: { franja: FranjaId; nombre?: string; desde?: number }) {
   const f = franjas.find((x) => x.id === franja)!;
+  const horas = horasDeFranja(f.inicio, f.fin).filter((h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3)) >= desde);
   return (
     <CampoSeleccion tono="claro" etiqueta={`Hora exacta (${f.nombre.toLowerCase()} ${f.inicio}–${f.fin})`} name={nombre} required defaultValue="">
       <option value="" disabled>
         Elige la hora
       </option>
-      {horasDeFranja(f.inicio, f.fin).map((h) => (
+      {horas.map((h) => (
         <option key={h} value={h}>
           {h}
         </option>
@@ -126,7 +129,7 @@ export function AccionesCita({ id, estado, fecha, franja, rol }: Props) {
     return (
       <div className="border-t border-obsidiana">
         <Accion titulo="Aceptar" estado="confirmada" id={id} abierta boton="Confirmar la cita">
-          <SelectorHora franja={franja} />
+          <SelectorHora franja={franja} desde={ahora && fecha === ahora.fecha ? horaMasTemprana(ahora) : 0} />
           <p className="m-0 text-[13px] text-tabaco">Al confirmar, el cliente recibe el aviso con la hora exacta.</p>
         </Accion>
         <Accion titulo="Proponer otro horario" estado="reprogramacion" id={id} boton="Enviar propuesta">

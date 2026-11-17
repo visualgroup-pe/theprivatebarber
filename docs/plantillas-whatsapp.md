@@ -27,7 +27,7 @@ Mientras una plantilla no esté aprobada, el envío falla y queda registrado com
 
 **Para:** Cliente
 
-> Hola {{1}}, tu cita está confirmada: {{2}}, {{3}} a las {{4}}, en {{5}}. Te atiende {{6}}. Total: {{7}}, IGV incluido.
+> Hola {{1}}, tu cita está confirmada: {{2}}, {{3}} a las {{4}}, en {{5}}. Te atiende {{6}}. Total: {{7}}, IGV incluido. Puedes reprogramar o cancelar sin costo hasta 2 horas antes, respondiendo a este mensaje.
 
 | Variable | Ejemplo |
 | --- | --- |

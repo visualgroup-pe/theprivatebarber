@@ -1,3 +1,5 @@
+import { RESUMEN_CANCELACION } from "./politicas";
+
 /** Preguntas frecuentes. Los [marcadores] son datos pendientes del brief. */
 export const preguntas: Array<{ pregunta: string; respuesta: string }> = [
   {
@@ -12,7 +14,8 @@ export const preguntas: Array<{ pregunta: string; respuesta: string }> = [
   },
   {
     pregunta: "¿Con cuánta anticipación reservo?",
-    respuesta: "Te recomendamos solicitar con [X horas] de anticipación.",
+    respuesta:
+      "Puedes pedirla para hoy mismo, hasta una hora antes. El formulario solo muestra los días y franjas en que todavía podemos llegar.",
   },
   {
     pregunta: "¿Qué medios de pago aceptan?",
@@ -21,7 +24,7 @@ export const preguntas: Array<{ pregunta: string; respuesta: string }> = [
   },
   {
     pregunta: "¿Puedo reprogramar o cancelar?",
-    respuesta: "Sí. [Política de reprogramación y cancelación por definir.]",
+    respuesta: `${RESUMEN_CANCELACION} Los detalles están en los términos y condiciones.`,
   },
   {
     pregunta: "¿Atienden en oficinas y hoteles?",

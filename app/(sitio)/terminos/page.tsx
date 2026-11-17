@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { openGraphDe } from "@/lib/sitio";
 import Link from "next/link";
 import { PaginaLegal, type SeccionLegal } from "@/components/bloques/PaginaLegal";
+import { POLITICA_CANCELACION } from "@/content/politicas";
 import { obtenerServicios, obtenerZonas } from "@/lib/catalogo";
 import { correoVisible, enlaceCorreo } from "@/lib/contacto";
 import { empresa } from "@/lib/empresa";
@@ -17,8 +18,7 @@ export const metadata: Metadata = {
 
 /*
  * Borrador. Debe revisarlo un abogado antes de publicar.
- * La política de reprogramación y cancelación y la anticipación mínima
- * están pendientes (BRIEF): quedan como marcadores.
+ * La política de reprogramación y cancelación vive en content/politicas.ts.
  */
 async function seccionesTerminos(): Promise<SeccionLegal[]> {
   const [servicios, zonasActivas] = await Promise.all([obtenerServicios(), obtenerZonas()]);
@@ -76,7 +76,10 @@ async function seccionesTerminos(): Promise<SeccionLegal[]> {
               proponemos otro horario, la cita se confirma cuando lo aceptas.
             </li>
           </ol>
-          <p>Te recomendamos solicitar con [X horas] de anticipación.</p>
+          <p>
+            Puedes solicitar tu cita para hoy mismo hasta una hora antes: el formulario solo ofrece los días y franjas en
+            que todavía hay tiempo de llegar.
+          </p>
         </>
       ),
     },
@@ -116,7 +119,15 @@ async function seccionesTerminos(): Promise<SeccionLegal[]> {
     {
       id: "cancelacion",
       titulo: "Reprogramación y cancelación",
-      contenido: <p>[Política de reprogramación y cancelación por definir.]</p>,
+      contenido: (
+        <ul>
+          {POLITICA_CANCELACION.map((p) => (
+            <li key={p.titulo}>
+              <strong>{p.titulo}.</strong> {p.texto}
+            </li>
+          ))}
+        </ul>
+      ),
     },
     {
       id: "espacio",

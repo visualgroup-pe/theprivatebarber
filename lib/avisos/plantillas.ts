@@ -1,6 +1,7 @@
 import type { FranjaId } from "@/content/zonas";
 import { fechaLarga, franjaTexto } from "@/lib/disponibilidad";
 import { soles } from "@/lib/tokens";
+import { HORAS_CAMBIO_SIN_COSTO } from "@/content/politicas";
 import { correoDeMarca, type Correo } from "./correo-html";
 
 /**
@@ -18,7 +19,7 @@ export const PLANTILLAS_WHATSAPP = {
   tpb_cita_confirmada: {
     para: "Cliente",
     cuerpo:
-      "Hola {{1}}, tu cita está confirmada: {{2}}, {{3}} a las {{4}}, en {{5}}. Te atiende {{6}}. Total: {{7}}, IGV incluido.",
+      "Hola {{1}}, tu cita está confirmada: {{2}}, {{3}} a las {{4}}, en {{5}}. Te atiende {{6}}. Total: {{7}}, IGV incluido. Puedes reprogramar o cancelar sin costo hasta 2 horas antes, respondiendo a este mensaje.",
     ejemplo: ["Andrés", "Corte y barba + asesoría", "jueves 10 de diciembre", "15:30", "San Isidro", "Nilber", "S/ 350"],
   },
   tpb_nuevo_horario: {
@@ -124,7 +125,7 @@ export function avisoCliente(evento: EventoCliente, d: DatosCita, sitioUrl: stri
           parrafos: [
             `${d.barbero} llegará a tu dirección con todo lo necesario. Ten listo un espacio con buena luz, una silla y un enchufe cerca.`,
           ],
-          nota: "Si necesitas cambiar algo, responde a este correo o escríbenos por WhatsApp.",
+          nota: `Puedes reprogramar o cancelar sin costo hasta ${HORAS_CAMBIO_SIN_COSTO} horas antes: responde a este correo o escríbenos por WhatsApp.`,
         }),
       };
     case "reprogramacion": {

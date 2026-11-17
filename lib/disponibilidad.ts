@@ -9,8 +9,11 @@ import { franjas, type FranjaId } from "@/content/zonas";
 
 /** Hasta cuántos días adelante se puede pedir. */
 export const DIAS_ADELANTE = 60;
-/** Anticipación mínima antes del inicio de la franja. Pendiente del brief: [X horas]. */
-export const ANTICIPACION_MINIMA_HORAS = 0;
+/**
+ * Sin anticipación mínima de días: se puede pedir para hoy mismo, siempre que
+ * quede al menos una hora antes de la visita (tiempo para que el barbero llegue).
+ */
+export const AVISO_MINIMO_MINUTOS = 60;
 
 const MS_DIA = 86_400_000;
 const LIMA = "America/Lima";
@@ -65,8 +68,14 @@ export function franjasDisponibles(
   const delDia = barbero.horarios.filter((h) => h.diaSemana === diaIso(fecha));
   return franjas
     .filter((f) => delDia.some((h) => minutos(h.horaInicio) <= f.inicio * 60 && minutos(h.horaFin) >= f.fin * 60))
-    .filter((f) => fecha > ahora.fecha || f.inicio * 60 > ahora.minutos + ANTICIPACION_MINIMA_HORAS * 60)
+    // Hoy: la franja vale si aún cabe una hora de inicio a una hora o más de ahora.
+    .filter((f) => fecha > ahora.fecha || horaMasTemprana(ahora) < f.fin * 60)
     .map((f) => f.id);
+}
+
+/** Primera hora posible hoy (minutos desde las 0:00): ahora + 1 hora, redondeada a 15 min. */
+export function horaMasTemprana(ahora = ahoraEnLima()): number {
+  return Math.ceil((ahora.minutos + AVISO_MINIMO_MINUTOS) / 15) * 15;
 }
 
 export function diaDisponible(barbero: Pick<Barbero, "horarios"> | undefined, fecha: string, ahora = ahoraEnLima()) {
