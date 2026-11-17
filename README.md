@@ -18,6 +18,7 @@ npm run dev
 - `/`: portada.
 - `/resenas`, `/privacidad`, `/terminos`, `/libro-de-reclamaciones`.
 - `/reserva`, `/reserva/confirmacion`: solicitud de cita en móvil y confirmación.
+- `/convocatoria`: convocatoria de barberos.
 - `/ingresar`, `/barbero`, `/admin`: paneles (requieren cuenta con rol; las crea la administración).
 - `/ui`: muestrario de componentes, solo en desarrollo.
 
@@ -41,6 +42,13 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 6. ✅ Paneles del barbero (`/barbero`) y de administración (`/admin`) con Supabase Auth; ingreso en `/ingresar`.
 7. ✅ Avisos por correo (Resend) y WhatsApp Cloud API, recordatorio de 24 h y alerta por falta de respuesta (ver «Avisos»).
 8. ✅ SEO (canónicas, Open Graph, HairSalon, sitemap, robots), Lighthouse y pruebas E2E (`npm run test:e2e`).
+
+## Convocatoria de barberos
+
+- `/convocatoria` (enlazada en el pie): requisitos, proceso y formulario. Requisitos y umbrales en `content/convocatoria.ts`; la evaluación automática en `lib/convocatoria.ts`.
+- Las fotos se reducen en el navegador (1600 px, JPEG, sin metadatos) y suben directo a un bucket **privado** de Supabase Storage con URL firmada (`/api/convocatoria/fotos`). Las que no llegan a enviarse se borran a las 24 h (tarea de cada hora).
+- `/admin/postulaciones`: primero las que cumplen requisitos; detalle con fotos, estado (nueva → en revisión → entrevista → prueba de oficio → aprobada / descartada), notas, «Crear ficha de barbero» (queda sin recibir solicitudes) y borrado con fotos.
+- Aviso por correo a la administración y acuse al postulante si deja correo.
 
 ## Avisos
 
@@ -78,6 +86,6 @@ npm run test:e2e
 ```
 
 - `db:probar`: reglas y permisos de la base (Postgres local, sin Supabase).
-- `test:e2e`: 34 pruebas de los flujos del brief con Playwright sobre el build de producción (puerto 3100), con Resend y WhatsApp imitados (`pruebas/e2e/mock-proveedores.cjs`).
+- `test:e2e`: 43 pruebas de los flujos del brief con Playwright sobre el build de producción (puerto 3100), con Resend y WhatsApp imitados (`pruebas/e2e/mock-proveedores.cjs`).
   Usan el Supabase de `.env.local`: crean un barbero y cuentas de prueba, y todo lo que escriben lleva el prefijo «Prueba E2E» y se borra al final.
   La prueba de la tarea de cada hora se salta sola si hay citas reales abiertas. Lo ideal es correrlas contra un proyecto de Supabase de prueba.

@@ -102,8 +102,8 @@ test.describe("con Supabase", () => {
     // En Storage quedan solo las 3 fotos enviadas, y no son públicas.
     const { data: archivos } = await servicio().storage.from("postulaciones").list(p.id);
     expect(archivos).toHaveLength(3);
-    const publica = await request.get(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/postulaciones/${p.fotos[0]}`);
-    expect(publica.ok()).toBe(false);
+    const publica = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/postulaciones/${p.fotos[0]}`);
+    expect(publica.ok).toBe(false);
 
     // Ya enviada, no acepta más fotos.
     const otra = await request.post("/api/convocatoria/fotos", { data: { id: p.id } });
@@ -133,7 +133,7 @@ test.describe("con Supabase", () => {
     await page.fill('input[name="correo"]', cuenta.email);
     await page.fill('input[name="clave"]', cuenta.clave);
     await page.getByRole("button", { name: "Ingresar" }).click();
-    await page.waitForURL("**/admin/postulaciones");
+    await page.waitForURL((u) => u.pathname === "/admin/postulaciones");
   }
 
   test("la administración la revisa con sus fotos, la aprueba y crea la ficha del barbero", async ({ page }) => {
@@ -163,7 +163,8 @@ test.describe("con Supabase", () => {
     await page.reload();
     const ficha = page.locator('main:visible form[aria-label="Crear ficha de barbero"]');
     await ficha.getByRole("button", { name: "Crear ficha de barbero" }).click();
-    await expect(ficha.getByRole("status")).toContainText("Ficha creada");
+    // La página se actualiza: el botón da paso al enlace para completar la ficha.
+    await expect(page.locator("main:visible").getByRole("region", { name: "Ficha de barbero" })).toContainText("Ya tiene ficha.");
 
     const { data: p } = await servicio().from("postulaciones").select("barbero_id").eq("id", idPostulacion).single();
     const { data: b } = await servicio().from("barberos").select("nombre, activo, whatsapp, anos_oficio").eq("id", p!.barbero_id).single();

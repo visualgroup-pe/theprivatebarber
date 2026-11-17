@@ -10,6 +10,7 @@ Esquema, reglas y permisos de la v1. Todo vive en `migrations/`; las semillas en
 | `migrations/…400_ajustes_asesor.sql` | Ajustes del asesor de Supabase: funciones de rol en esquema privado, una política por acción, índices |
 | `migrations/…500_avisos.sql` | Tabla `avisos` (registro de envíos) y marcas de recordatorio y alerta en `citas` |
 | `migrations/…600_cron_avisos.sql` | Tarea cada hora (`pg_cron` + `pg_net`) que llama a `/api/cron/avisos`; URL y secreto en Vault |
+| `migrations/…700_postulaciones.sql` | Convocatoria: tabla `postulaciones` (solo admin), bucket privado `postulaciones` en Storage |
 | `seed.sql` | Carta, zonas, barberos y horarios del brief (se puede repetir sin duplicar) |
 | `pruebas/` | Pruebas locales (`npm run db:probar`) con un Postgres desechable |
 
@@ -52,7 +53,7 @@ El WhatsApp de los barberos no es público.
 
 - **theprivatebarber** · ref `mqrqdmmexrpheljkpthg` · São Paulo (`sa-east-1`) · Postgres 17 · plan gratuito (pasar a Pro antes del lanzamiento).
 - Organización: visualgroup-pe's Org.
-- Migraciones aplicadas: las seis de `migrations/` y `seed.sql`. Asesor de Supabase: sin advertencias (solo avisos informativos esperados).
+- Migraciones aplicadas: las siete de `migrations/` y `seed.sql`. Asesor de Supabase: sin advertencias (solo avisos informativos esperados).
 - Claves de API: la publicable va en la web; para el servidor, crear en el panel una clave secreta para producción (Vercel). La clave secreta `claude_dev` es solo del contenedor de desarrollo: se puede revocar en Project Settings → API Keys.
 
 ## Aplicar cambios
