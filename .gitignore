@@ -47,3 +47,4 @@ next-env.d.ts
 /pruebas/.cuentas.json
 /test-results/
 /playwright-report/
+/capturas/
