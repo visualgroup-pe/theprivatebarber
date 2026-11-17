@@ -56,8 +56,7 @@ Copia `.env.example` a `.env.local` y completa los datos pendientes.
 
 - Salen en segundo plano (`after()`), sin demorar la respuesta. Un canal sin claves se omite.
 - Cada aviso queda en la tabla `avisos` con su estado; el webhook `/api/whatsapp/webhook` actualiza «entregado» y «leído».
-- `/api/cron/avisos` exige `CRON_SECRET` y debe correr cada hora. Vercel Hobby solo permite tareas diarias: al pasar a Pro, agregar a `vercel.json`:
-  `"crons": [{ "path": "/api/cron/avisos", "schedule": "0 * * * *" }]`.
+- `/api/cron/avisos` exige `CRON_SECRET`. Mientras Vercel esté en Hobby (tareas solo diarias), la llama **cada hora Supabase** con `pg_cron` + `pg_net` (migración `…600_cron_avisos.sql`); la URL y el secreto están en Supabase Vault (`avisos_url`, `avisos_secreto`, igual a `CRON_SECRET` en Vercel). Al pasar a Pro se puede mover a Vercel Cron.
 - Plantillas de WhatsApp para aprobar en Meta: `docs/plantillas-whatsapp.md`.
 
 ## Publicación (Vercel)
